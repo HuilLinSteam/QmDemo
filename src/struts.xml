@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+    "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+	<package name="loginJSP" namespace="/" extends="struts-default">
+		<!-- ajax请求 -->
+		<action name="login" class="com.action.LoginAction" method="login">
+		
+		</action>
+		<!-- 验证码 -->
+		<action name="getVCode" class="com.action.LoginAction" method="getVCode">
+		
+		</action>
+		<!-- 对应地址 -->
+		<action name="check" class="com.action.SystemAction" method="check"></action>
+		
+	</package>
+</struts>
