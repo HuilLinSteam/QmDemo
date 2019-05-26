@@ -29,7 +29,7 @@ public class VCodeGenerator {
 	 * 字体
 	 */
 	final private String[] fontNames = new String[]{
-			"黑体", "宋体", "Courier", "Arial", 
+			"��", "��", "Courier", "Arial", 
 			"Verdana", "Times", "Tahoma", "Georgia"};
 	/**
 	 * 字体样式

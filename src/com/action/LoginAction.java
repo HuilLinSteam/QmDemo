@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.struts2.ServletActionContext;
+import org.apache.tomcat.util.descriptor.web.ContextService;
 
 import com.bean.User;
 import com.tools.VCodeGenerator;
@@ -18,8 +19,9 @@ public class LoginAction extends ActionSupport{
 	private SystemService service = new SystemService();
 	
 	 
-	private void login(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		
+	public String login() throws IOException {
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpServletResponse response = ServletActionContext.getResponse();
 		String account = request.getParameter("account");
 		
 		String password = request.getParameter("password");
@@ -57,12 +59,15 @@ public class LoginAction extends ActionSupport{
 			}
 		}
 		response.getWriter().write(msg);
+		return null;
 		
 	}
 	
 	
-	private void getVCode(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public String getVCode() throws IOException {
 		
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpServletResponse response = ServletActionContext.getResponse();
 		VCodeGenerator vcGenerator = new VCodeGenerator();
 		
 		String vcode = vcGenerator.generatorVCode();
@@ -72,19 +77,6 @@ public class LoginAction extends ActionSupport{
 		BufferedImage vImg = vcGenerator.generatorRotateVCodeImage(vcode, true);
 		
 		ImageIO.write(vImg, "gif", response.getOutputStream());
-		
-	}
-	public String login() throws IOException{
-		HttpServletRequest request = ServletActionContext.getRequest();
-		HttpServletResponse response = ServletActionContext.getResponse();
-		login(request, response);
-		return null;
-	}
-	
-	public String getVCode() throws IOException{
-		HttpServletRequest request = ServletActionContext.getRequest();
-		HttpServletResponse response = ServletActionContext.getResponse();
-		getVCode(request, response);
 		return null;
 	}
 	
