@@ -18,35 +18,46 @@ public class LoginAction extends ActionSupport{
 	private static final long serialVersionUID = 1L;
 	private SystemService service = new SystemService();
 	
-	 
+	User user;
+	public User getUser() {
+		return user;
+	}
+
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+
 	public String login() throws IOException {
 		HttpServletRequest request = ServletActionContext.getRequest();
-		HttpServletResponse response = ServletActionContext.getResponse();
-		String account = request.getParameter("account");
+		HttpServletResponse response = ServletActionContext.getResponse();	
 		
-		String password = request.getParameter("password");
+		String account = user.getAccount();
+		
+		String password = user.getPassword();
 		
 		String vcode = request.getParameter("vcode");
 		
-		int type = Integer.parseInt(request.getParameter("type"));
-		
-		
+		int type = user.getType();
 		String msg = "";
-		
+		//System.out.println(user.toString());
 		String sVcode = (String) request.getSession().getAttribute("vcode");
 		if(!sVcode.equalsIgnoreCase(vcode)){
 			msg = "vcodeError";
-		} else{	
 			
-			User user = new User();
-			user.setAccount(account);
-			user.setPassword(password);
-			user.setType(Integer.parseInt(request.getParameter("type")));
+		} else{
 			
-			User loginUser = service.getAdmin(user);
+			User user1 = new User();
+			user1.setAccount(account);
+			user1.setPassword(password);
+			user1.setType(Integer.parseInt(request.getParameter("type")));
+			System.out.println(user1.toString());
+			User loginUser = service.getAdmin(user1);
 			if(loginUser == null){
 				msg = "loginError";
 			} else{ 
+//				if(User.USER_ADMIN == type){
 				if(User.USER_ADMIN == type){
 					msg = "admin";
 				} else if(User.USER_STUDENT == type){

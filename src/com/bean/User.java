@@ -40,5 +40,11 @@ public class User {
 	public void setType(int type) {
 		this.type = type;
 	}
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", account=" + account + ", password=" + password + ", name=" + name + ", type="
+				+ type + "]";
+	}
+	
 	
 }
