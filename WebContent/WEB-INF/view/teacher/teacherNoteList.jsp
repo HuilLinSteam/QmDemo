@@ -23,7 +23,7 @@
 	        collapsible: false,//是否可折叠的 
 	        fit: true,//自动大小 
 	        method: "post",
-	        url:"TeacherServlet?method=TeacherList&t="+new Date().getTime(),
+	        url:"TeacherAction-teacherList",
 	        idField:'id', 
 	        singleSelect: true,//是否单选 
 	        pagination: true,//分页控件 
@@ -103,7 +103,7 @@
 				$("#edit_sex").textbox('setValue', selectRow.sex);
 				$("#edit_phone").textbox('setValue', selectRow.phone);
 				$("#edit_qq").textbox('setValue', selectRow.qq);
-				$("#edit_photo").attr("src", "PhotoServlet?method=GetPhoto&type=3&number="+selectRow.number);
+				$("#edit_photo").attr("src", "PhotoAction-getPhoto?type=3&number="+selectRow.number);
 				
 				var courseList = selectRow.courseList;
 				

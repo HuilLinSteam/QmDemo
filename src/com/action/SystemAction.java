@@ -23,9 +23,7 @@ public class SystemAction extends ActionSupport{
 		
 		String method = request.getParameter("method");
 		
-		if("LoginOut".equals(method)){
-			loginOut(request, response);
-		} else if("toAdminView".equalsIgnoreCase(method)){ 
+		 if("toAdminView".equalsIgnoreCase(method)){ 
 			request.getRequestDispatcher("/WEB-INF/view/admin/admin.jsp").forward(request, response);
 		} else if("toStudentView".equals(method)){ 
 			request.getRequestDispatcher("/WEB-INF/view/student/student.jsp").forward(request, response);
@@ -44,8 +42,6 @@ public class SystemAction extends ActionSupport{
 		
 		if("AllAccount".equalsIgnoreCase(method)){ 
 			allAccount(request, response);
-		} else if("EditPasswod".equals(method)){ 
-			editPasswod(request, response);
 		} else if("EditSystemInfo".equals(method)){ 
 			editSystemInfo(request, response);
 		}
@@ -63,7 +59,9 @@ public class SystemAction extends ActionSupport{
 		response.getWriter().write("success");
 	}
 
-	private void editPasswod(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public void editPasswod() throws Exception {
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpServletResponse response = ServletActionContext.getResponse();
 		User user = new User();
 		user.setAccount(request.getParameter("account"));
 		user.setPassword(request.getParameter("password"));
@@ -72,12 +70,11 @@ public class SystemAction extends ActionSupport{
 	}
 
 
-	private void loginOut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+	public String loginOut() throws Exception{
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpServletResponse response = ServletActionContext.getResponse();
 		request.getSession().removeAttribute("user");
-		String contextPath = request.getContextPath();
-		
-		response.sendRedirect(contextPath+"/index.jsp");
+		return "loginOut";
 	}
 	
 	private void allAccount(HttpServletRequest request, HttpServletResponse response) throws IOException {

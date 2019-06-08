@@ -22,7 +22,7 @@
 	        collapsible:false,//是否可折叠的 
 	        fit: true,//自动大小 
 	        method: "post",
-	        url:"TeacherServlet?method=TeacherList&t="+new Date().getTime(),
+	        url:"TeacherAction-teacherList?t="+new Date().getTime(),
 	        idField:'id', 
 	        singleSelect:false,//是否单选 
 	        pagination:true,//分页控件 
@@ -101,7 +101,7 @@
             		if(r){
             			$.ajax({
 							type: "post",
-							url: "TeacherServlet?method=DeleteTeacher",
+							url: "TeacherAction-deleteTeacher",
 							data: {ids: ids,numbers:numbers},
 							success: function(msg){
 								if(msg == "success"){
@@ -168,7 +168,7 @@
 							
 							$.ajax({
 								type: "post",
-								url: "TeacherServlet?method=AddTeacher",
+								url: "TeacherAction-addTeacher",
 								data: data,
 								success: function(msg){
 									if(msg == "success"){
@@ -308,7 +308,7 @@
 	  	});
 	  	
 	  	$("#add_gradeList").combobox({
-	  		url: "GradeServlet?method=GradeList&t="+new Date().getTime(),
+	  		url: "GradeAction-gradeList?t="+new Date().getTime(),
 	  		onChange: function(newValue, oldValue){
 	  			//加载该年级下的班级
 	  			$("#add_clazzList").combobox("clear");
@@ -328,7 +328,7 @@
 	  	});
 	  	
 	  	$("#add_clazzList").combobox({
-	  		url: "ClazzServlet?method=ClazzList&t="+new Date().getTime(),
+	  		url: "ClazzAction-clazzList?t="+new Date().getTime(),
 	  		onLoadSuccess: function(){
 				//默认选择第一条数据
 				var data = $(this).combobox("getData");
@@ -337,7 +337,7 @@
 	  	});
 	  	
 	  	$("#add_courseList").combobox({
-	  		url: "CourseServlet?method=CourseList&t="+new Date().getTime(),
+	  		url: "CourseAction-courseList?t="+new Date().getTime(),
 	  		onLoadSuccess: function(){
 		  		//默认选择第一条数据
 				var data = $(this).combobox("getData");;
@@ -394,7 +394,7 @@
 							
 							$.ajax({
 								type: "post",
-								url: "TeacherServlet?method=EditTeacher",
+								url: "TeacherAction-editTeacher",
 								data: data,
 								success: function(msg){
 									if(msg == "success"){
@@ -444,7 +444,7 @@
 				$("#edit_sex").textbox('setValue', selectRow.sex);
 				$("#edit_phone").textbox('setValue', selectRow.phone);
 				$("#edit_qq").textbox('setValue', selectRow.qq);
-				$("#edit_photo").attr("src", "PhotoServlet?method=GetPhoto&type=3&number="+selectRow.number);
+				$("#edit_photo").attr("src", "PhotoAction-getPhoto?type=3&number="+selectRow.number);
 				
 				var courseList = selectRow.courseList;
 				

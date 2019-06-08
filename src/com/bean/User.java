@@ -1,7 +1,7 @@
 package com.bean;
 
 public class User {
-	//¶¨Òå¾²Ì¬³£Á¿
+	//ï¿½ï¿½ï¿½å¾²Ì¬ï¿½ï¿½ï¿½ï¿½
 	public static final int USER_ADMIN = 1;
 	public static final int USER_STUDENT = 2;
 	public static final int USER_TEACHER = 3;
@@ -9,7 +9,7 @@ public class User {
 	private String account;
 	private String password = "111111";
 	private String name;
-	private int type = USER_STUDENT;//Ñ§ÉúÓÃ»§
+	private int type=USER_ADMIN;//Ñ§ï¿½ï¿½ï¿½Ã»ï¿½
 	public int getId() {
 		return id;
 	}

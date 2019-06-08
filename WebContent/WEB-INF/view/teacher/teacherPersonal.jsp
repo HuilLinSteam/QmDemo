@@ -39,13 +39,13 @@
 	  						} else{
 	  							$.ajax({
 	  								type: "post",
-	  								url: "SystemServlet?method=EditPasswod&t="+new Date().getTime(),
+	  								url: "SystemAction-editPasswod",
 	  								data: $("#editPassword").serialize(),
 	  								success: function(msg){
 	  									if(msg == "success"){
 	  										$.messager.alert("消息提醒","修改成功，将重新登录","info")
 	  										setTimeout(function(){
-	  											top.location.href = "SystemServlet?method=LoginOut";
+	  											top.location.href = "SystemAction-loginOut";
 	  										}, 1000);
 	  									}
 	  								}
@@ -66,7 +66,7 @@
 	  			],
 	    })
 		
-		//设置编辑学生窗口
+		//设置编辑老师窗口
 	    $("#editDialog").dialog({
 	    	title: "修改密码",
 	    	width: 500,
@@ -92,7 +92,7 @@
 						} else{
 							$.ajax({
 								type: "post",
-								url: "TeacherServlet?method=EditTeacherPersonal&t="+new Date().getTime(),
+								url: "TeacherAction-editTeacherPersonal",
 								data: $("#editForm").serialize(),
 								success: function(msg){
 									if(msg == "success"){
@@ -136,7 +136,7 @@
 				var message =  $(window.frames["photo_target"].document).find("#message").text();
 				$.messager.alert("消息提醒",message,"info");
 				
-				$("#user_photo").attr("src", "PhotoServlet?method=GetPhoto&t="+new Date().getTime());
+				$("#user_photo").attr("src", "PhotoAction-getPhoto");
 			}, 1500)
 		});
 		
@@ -145,11 +145,11 @@
 </head>
 <body>
 	
-	<!-- 修改学生窗口 -->
+	<!-- 修改老师窗口 -->
 	<div id="editDialog" style="padding: 20px">
 		<div style="width: 300px; height: 400px;float: right; margin: 20px 120px 0 0;">
-	    	<img id="user_photo" alt="照片" style="margin-bottom: 30px;display: block;max-width: 250px; max-height: 300px;" title="照片" src="PhotoServlet?method=GetPhoto" />
-	    	<form id="uploadForm" method="post" enctype="multipart/form-data" action="PhotoServlet?method=SetPhoto" target="photo_target">
+	    	<img id="user_photo" alt="照片" style="margin-bottom: 30px;display: block;max-width: 250px; max-height: 300px;" title="照片" src="PhotoAction-getPhoto" />
+	    	<form id="uploadForm" method="post" enctype="multipart/form-data" action="PhotoAction-setPhoto" target="photo_target">
 	    		<!-- StudentServlet?method=SetPhoto -->
 		    	<input class="easyui-filebox" name="photo" data-options="prompt:'选择照片'" style="width:200px;">
 		    	<input id="uploadBtn" class="easyui-linkbutton" style="width: 50px; height: 24px;" type="button" value="上传"/>

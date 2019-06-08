@@ -30,7 +30,7 @@
 	        collapsible: false,//是否可折叠的 
 	        fit: true,//自动大小 
 	        method: "post",
-	        url:"ExamServlet?method=TeacherExamList&t="+new Date().getTime(),
+	        url:"ExamAction-teacherExamList?t="+new Date().getTime(),
 	        idField:'id', 
 	        singleSelect: true,//是否单选 
 	        pagination: false,//分页控件 
@@ -89,7 +89,7 @@
 	    	
 	    	$.ajax({
 				type: "post",
-				url: "TeacherServlet?method=GetTeacher&t="+new Date().getTime(),
+				url: "TeacherAction-getTeacher?t="+new Date().getTime(),
 				dataType: "json",
 				success: function(result){
 					var courseList = result.courseList;

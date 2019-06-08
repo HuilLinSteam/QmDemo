@@ -17,4 +17,5 @@
 		<action name="check" class="com.action.SystemAction" method="check"></action>
 		
 	</package>
+	<include file="struts_zcr.xml"></include>
 </struts>
