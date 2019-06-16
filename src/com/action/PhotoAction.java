@@ -16,9 +16,9 @@ import com.opensymphony.xwork2.ActionSupport;
 public class PhotoAction extends ActionSupport{
 	PhotoService service = new PhotoService();
 	public String setPhoto() throws IOException {
-		//获取学号或工号
 		HttpServletRequest request = ServletActionContext.getRequest();
 		HttpServletResponse response = ServletActionContext.getResponse();
+		//获取学号或工号
 		User user = (User) request.getSession().getAttribute("user");
 		
 		String msg = service.setPhoto(user, request);
@@ -42,9 +42,12 @@ public class PhotoAction extends ActionSupport{
 			user = (User) request.getSession().getAttribute("user");
 		}
 		InputStream is = service.getPhoto(user);
+		System.out.println(is);
 		if(is != null){
 			byte[] b = new byte[is.available()];
 			is.read(b);
+			System.out.println(b);
+			System.out.println(is.read(b));
 			response.getOutputStream().write(b, 0, b.length);
 		}
 	}

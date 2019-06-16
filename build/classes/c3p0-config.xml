@@ -6,8 +6,8 @@
 		jdbc:mysql://localhost:3306/ssms
 		</property>
 		<property name="user">root</property>
-		<property name="password">123</property>
+		<property name="password">root</property>
 	</default-config>
-	
+	<!--我更新了-->
 </c3p0-config>
 
