@@ -228,15 +228,15 @@ public class BaseDaoImpl implements BaseDaoInter{
 		int key = 0;
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
-			//璁剧疆鍊�
+			
 			if(param != null && param.length > 0){
 				for(int i = 0;i < param.length;i++){
 					ps.setObject(i+1, param[i]);
 				}
 			}
-			//鎵цsql璇彞
+			
 			ps.execute();
-			//鑾峰彇鎻掑叆鏁版嵁鐨刬d鍊�
+			
 			ResultSet rs = ps.getGeneratedKeys();
 			if(rs.next()){
 				key = rs.getInt(1);

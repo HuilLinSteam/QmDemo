@@ -4,6 +4,7 @@
     "http://struts.apache.org/dtds/struts-2.3.dtd">
 
 <struts>
+	<constant name="struts.i18n.encoding" value="utf-8"/>
 	<package name="loginJSP" namespace="/" extends="struts-default">
 		<!-- ajax请求 -->
 		<action name="login" class="com.action.LoginAction" method="login">
@@ -17,4 +18,5 @@
 		<action name="check" class="com.action.SystemAction" method="check"></action>
 		
 	</package>
+	<include file="struts_zcr.xml"></include>
 </struts>

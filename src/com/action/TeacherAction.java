@@ -14,8 +14,11 @@ import org.apache.struts2.ServletActionContext;
 
 import com.bean.Teacher;
 import com.bean.User;
+import com.bean.Clazz;
+import com.bean.Grade;
 import com.bean.Page;
 import com.service.TeacherService;
+import com.tools.StringTool;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class TeacherAction extends ActionSupport{
@@ -42,7 +45,7 @@ public class TeacherAction extends ActionSupport{
 	public void editTeacherPersonal() throws Exception {
 		HttpServletRequest request = ServletActionContext.getRequest();
 		HttpServletResponse response = ServletActionContext.getResponse();
-		//è·å–å‚æ•°å
+		
 		Enumeration<String> pNames = request.getParameterNames();
 		Teacher teacher = new Teacher();
 		while(pNames.hasMoreElements()){
@@ -60,12 +63,12 @@ public class TeacherAction extends ActionSupport{
 	public void teacherList() throws IOException {
 		HttpServletRequest request = ServletActionContext.getRequest();
 		HttpServletResponse response = ServletActionContext.getResponse();
-		//è·å–åˆ†é¡µå‚æ•°
+		//»ñÈ¡·ÖÒ³²ÎÊı
 		int page = Integer.parseInt(request.getParameter("page"));
 		int rows = Integer.parseInt(request.getParameter("rows"));
-		//è·å–æ•°æ®
+		//»ñÈ¡Êı¾İ
 		String result = service.getTeacherList(new Page(page, rows));
-		//è¿”å›æ•°æ®
+		//·µ»ØÊı¾İ
 		response.setContentType("text/html;charset=UTF-8"); 
         response.getWriter().write(result);
 	}
@@ -73,7 +76,7 @@ public class TeacherAction extends ActionSupport{
 	public void deleteTeacher() throws IOException {
 		HttpServletRequest request = ServletActionContext.getRequest();
 		HttpServletResponse response = ServletActionContext.getResponse();
-		//è·å–è¦åˆ é™¤çš„å­¦å·
+		
 		String[] ids = request.getParameterValues("ids[]");
 		String[] numbers = request.getParameterValues("numbers[]");
 		try {
@@ -88,7 +91,7 @@ public class TeacherAction extends ActionSupport{
 	public void addTeacher() throws IOException {
 		HttpServletRequest request = ServletActionContext.getRequest();
 		HttpServletResponse response = ServletActionContext.getResponse();
-		//è·å–å‚æ•°å
+		//»ñÈ¡²ÎÊıÃû
 		Enumeration<String> pNames = request.getParameterNames();
 		Teacher teacher = new Teacher();
 		while(pNames.hasMoreElements()){
@@ -97,7 +100,7 @@ public class TeacherAction extends ActionSupport{
 			System.out.println(pName);
 			System.out.println(value);
 			try {
-				if("course[]".equals(pName)){//è®¾ç½®æ‰€é€‰è¯¾ç¨‹
+				if("course[]".equals(pName)){//ÉèÖÃËùÑ¡¿Î³Ì
 					BeanUtils.setProperty(teacher, "course", request.getParameterValues("course[]"));
 				} else{
 					BeanUtils.setProperty(teacher, pName, value);
@@ -118,14 +121,14 @@ public class TeacherAction extends ActionSupport{
 	public void editTeacher() throws IOException {
 		HttpServletRequest request = ServletActionContext.getRequest();
 		HttpServletResponse response = ServletActionContext.getResponse();
-		//è·å–å‚æ•°å
+		//»ñÈ¡²ÎÊıÃû
 		Enumeration<String> pNames = request.getParameterNames();
 		Teacher teacher = new Teacher();
 		while(pNames.hasMoreElements()){
 			String pName = pNames.nextElement();
 			String value = request.getParameter(pName);
 			try {
-				if("course[]".equals(pName)){//è®¾ç½®æ‰€é€‰è¯¾ç¨‹
+				if("course[]".equals(pName)){
 					BeanUtils.setProperty(teacher, "course", request.getParameterValues("course[]"));
 				} else{
 					BeanUtils.setProperty(teacher, pName, value);
@@ -145,10 +148,48 @@ public class TeacherAction extends ActionSupport{
 	public void getTeacher() throws IOException {
 		HttpServletRequest request = ServletActionContext.getRequest();
 		HttpServletResponse response = ServletActionContext.getResponse();
-		//è·å–å½“å‰ç”¨æˆ·
+		
 		User user = (User) request.getSession().getAttribute("user");
 		String number = user.getAccount();
 		String result = service.getTeacherResult(number);
+		response.setContentType("text/html;charset=UTF-8"); 
+		response.getWriter().write(result);
+	}
+	
+	
+	public void getExamClazz() throws IOException {
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpServletResponse response = ServletActionContext.getResponse();
+		int gradeid = Integer.parseInt(request.getParameter("gradeid"));
+		Grade grade = new Grade();
+		grade.setId(gradeid);
+		
+		User user = (User) request.getSession().getAttribute("user");
+		
+		String result = service.getExamClazz(user.getAccount(), grade);
+		response.setContentType("text/html;charset=UTF-8");
+		response.getWriter().write(result);
+	}
+	
+	public void getExamCourse() throws IOException {
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpServletResponse response = ServletActionContext.getResponse();
+		int gradeid = Integer.parseInt(request.getParameter("gradeid"));
+		Grade grade = new Grade();
+		grade.setId(gradeid);
+		String scid = request.getParameter("clazzid");
+		if(StringTool.isEmpty(scid)){
+			response.getWriter().write("");
+			return;
+		}
+		int clazzid = Integer.parseInt(scid);
+		Clazz clazz = new Clazz();
+		clazz.setId(clazzid);
+		
+		User user = (User) request.getSession().getAttribute("user");
+		
+		String result = service.getExamClazz(user.getAccount(), grade, clazz);
+		response.setContentType("text/html;charset=UTF-8"); 
 		response.getWriter().write(result);
 	}
 	

@@ -1,10 +1,18 @@
 package com.service;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.lang.reflect.InvocationTargetException;
+import java.net.URLEncoder;
 import java.sql.Connection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletResponse;
 
 import com.bean.Course;
 import com.bean.CourseItem;
@@ -15,77 +23,44 @@ import com.bean.Teacher;
 import com.bean.User;
 import com.dao.impl.BaseDaoImpl;
 import com.dao.impl.ExamDaoImpl;
+import com.dao.impl.ScoreDaoImpl;
 import com.dao.impl.StudentDaoImpl;
 import com.dao.impl.TeacherDaoImpl;
 import com.dao.inter.BaseDaoInter;
 import com.dao.inter.ExamDaoInter;
+import com.dao.inter.ScoreDaoInter;
 import com.dao.inter.StudentDaoInter;
 import com.dao.inter.TeacherDaoInter;
+import com.tools.ExcelTool;
 import com.tools.MysqlTool;
 import com.tools.StringTool;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-
 /**
- * 教师类服务层
+ * 成绩类服务层
  * @author bojiangzhou
  *
  */
-public class ExamService {
+public class ScoreService {
 	
-	private ExamDaoInter dao;
+	private ScoreDaoInter dao;
 	
-	public ExamService(){
-		dao = new ExamDaoImpl();
+	public ScoreService(){
+		dao = new ScoreDaoImpl();
 	}
 	
 	/**
-	 * 获取考试信息
+	 * 获取成绩列表
 	 * @param exam 参数
-	 * @param page 分页
 	 * @return
 	 */
-	public String getExamList(Exam exam, Page page) {
-		//sql语句
-		StringBuffer sb = new StringBuffer("SELECT * FROM exam ");
-		//参数
-		List<Object> param = new LinkedList<>();
-		//判断条件
-		if(exam != null){ 
-			if(exam.getGradeid() != 0){//条件：年级
-				int gradeid = exam.getGradeid();
-				param.add(gradeid);
-				sb.append("AND gradeid=? ");
-			}
-			if(exam.getClazzid() != 0){
-				int clazzid = exam.getClazzid();
-				param.add(clazzid);
-				sb.append("AND clazzid=? ");
-			}
-		}
-		//添加排序
-		sb.append("ORDER BY id DESC ");
-		//分页
-		if(page != null){
-			param.add(page.getStart());
-			param.add(page.getSize());
-			sb.append("LIMIT ?,?");
-		}
-		String sql = sb.toString().replaceFirst("AND", "WHERE");
-		//获取数据
-		List<Exam> list = dao.getExamList(sql, param);
-		//获取总记录数
-		long total = getCount(exam);
-		//定义Map
-		Map<String, Object> jsonMap = new HashMap<String, Object>();  
-		//total键 存放总记录数，必须的
-        jsonMap.put("total", total);
-        //rows键 存放每页记录 list 
-        jsonMap.put("rows", list); 
+	public String getScoreList(Exam exam) {
+		
+		List<Map<String, Object>> list = dao.getScoreList(exam);
         //格式化Map,以json格式返回数据
-        String result = JSONObject.fromObject(jsonMap).toString();
+        String result = JSONArray.fromObject(list).toString();
         //返回
 		return result;
 	}
@@ -133,15 +108,14 @@ public class ExamService {
 			
 			//添加考试信息
 			int examid = dao.insertReturnKeysTransaction(conn, 
-					"INSERT INTO exam(name, time, remark, type, gradeid, clazzid, courseid) value(?,?,?,?,?,?,?)", 
+					"INSERT INTO exam(name, time, remark, type, gradeid, clazzid) value(?,?,?,?,?,?)", 
 					new Object[]{
 						exam.getName(), 
 						exam.getTime(),
 						exam.getRemark(),
 						exam.getType(),
 						exam.getGradeid(),
-						exam.getClazzid(),
-						exam.getCourseid()
+						exam.getClazzid()
 					});
 			
 			//添加学生成绩表
@@ -215,95 +189,109 @@ public class ExamService {
 			MysqlTool.closeConnection();
 		}
 	}
-	
+
 	/**
-	 * 删除考试
-	 * @param ids 
-	 * @throws Exception 
+	 * 获取数据栏的列名
+	 * @param exam
+	 * @return
 	 */
-	public void deleteExam(int id) throws Exception{
-		//获取连接
-		Connection conn = MysqlTool.getConnection();
-		//开启事务
-		MysqlTool.startTransaction();
-		try {
-			//删除成绩表
-			dao.deleteTransaction(conn, "DELETE FROM escore WHERE examid=?", new Object[]{id});
-			//删除考试
-			dao.deleteTransaction(conn, "DELETE FROM exam WHERE id =?", new Object[]{id});
+	public String columnList(Exam exam) {
+		List<Object> list = getColumn(exam);
+		
+		return JSONArray.fromObject(list).toString();
+	}
+	
+	private List<Object> getColumn(Exam exam){
+		List<Object> list = null;
+		if(exam.getType() == Exam.EXAM_GRADE_TYPE){ //年级考试
+			//获取考试的科目
+			list = dao.getList(Course.class, 
+					"SELECT c.id id, c.name name FROM course c, grade_course gc WHERE c.id=gc.courseid AND gc.gradeid=?", 
+					new Object[]{exam.getGradeid()});
+		} else{
+			//获取某科
+			list =  dao.getList(Course.class, 
+					"SELECT * FROM course WHERE id=?", new Object[]{exam.getCourseid()});
 			
-			//提交事务
-			MysqlTool.commit();
+		}
+		return list;
+	}
+	
+
+	/**
+	 * 导出成绩列表
+	 * @param response
+	 * @param exam
+	 */
+	public void exportScore(HttpServletResponse response, Exam exam) {
+		//获取需要导出的数据
+		List<Map<String, Object>> list = dao.getScoreList(exam);
+		//获取考试信息
+		Exam em = (Exam) dao.getObject(Exam.class, "SELECT name, time FROM exam WHERE id=?", new Object[]{exam.getId()});
+		//设置文件名
+		String fileName = em.getName()+".xls";
+		//定义输出类型
+		response.setContentType("application/msexcel;charset=utf-8");
+		//设定输出文件头
+		try {
+			response.setHeader("Content-Disposition", "attachment; filename="+URLEncoder.encode(fileName, "UTF-8"));
+		} catch (UnsupportedEncodingException e1) {
+			e1.printStackTrace();
+		}
+		
+		//获取导出的课程
+		List<Object> courseList = getColumn(exam);
+		
+		//表头长度
+		int len = 2 + courseList.size();
+		if(exam.getType() == Exam.EXAM_GRADE_TYPE){
+			len += 1;
+		}
+		//设置excel的列名
+		String[] headers = new String[len];
+		headers[0] = "姓名";
+		headers[1] = "学号";
+		
+		int index = 2;
+		for(Object obj : courseList){
+			Course course = (Course) obj;
+			headers[index++] = course.getName();
+		}
+		
+		if(exam.getType() == Exam.EXAM_GRADE_TYPE){
+			headers[len-1] = "总分";
+		}
+		
+		ExcelTool et = new ExcelTool<>();
+		//导出
+		try {
+			et.exportMapExcel(headers, list, response.getOutputStream());
 		} catch (Exception e) {
-			//回滚事务
-			MysqlTool.rollback();
 			e.printStackTrace();
-			throw e;
-		} finally {
-			MysqlTool.closeConnection();
 		}
 	}
 
 	/**
-	 * 获取某老师的考试
-	 * @param id
-	 * @return
+	 * 设置成绩
+	 * @param score id_score 形式
 	 */
-	public String teacherExamList(String number) {
-		//获取教师信息
-		Teacher teacher = new TeacherService().getTeacher(number);
+	public void setScore(String[] score) {
+		Object[][] param = new Object[score.length][2];
 		
-		List<CourseItem> itemList = teacher.getCourseList();
-		if(itemList.size() == 0){
-			return "";
+		for(int i = 0;i < score.length;i++){
+			String[] id_score = score[i].split("_");
+			int id = Integer.parseInt(id_score[0]);
+			param[i][1] = id;
+			if(id_score.length == 1){
+				param[i][0] = 0;
+			} else {
+				int sco = Integer.parseInt(id_score[1]);
+				param[i][0] = sco;
+			}
 		}
-		StringBuffer g = new StringBuffer();
-		StringBuffer c = new StringBuffer();
-		for(CourseItem item : itemList){
-			g.append(","+item.getGradeid());
-			c.append(","+item.getCourseid());
-		}
 		
-		StringBuffer sb = new StringBuffer("SELECT * FROM exam WHERE (gradeid IN (");
-		sb.append(g.toString().replaceFirst(",", ""));
-		sb.append(") AND type=1) OR (courseid IN (");
-		sb.append(c.toString().replaceFirst(",", ""));
-		sb.append(") AND type=2)");
-		//sql语句
-		String sql = sb.toString();
-		//获取数据
-		List<Exam> list = dao.getExamList(sql, null);
+		dao.updateBatch("UPDATE escore SET score=? WHERE id=?", param);
 		
-        //格式化Map,以json格式返回数据
-        String result = JSONArray.fromObject(list).toString();
-        //返回
-		return result;
 	}
-	
-	/**
-	 * 获取某个学生考试列表
-	 * @param number
-	 * @return
-	 */
-	public String studentExamList(String number) {
-		
-		//获取学生详细信息
-		Student student = new StudentDaoImpl().getStudentList("SELECT * FROM student WHERE number="+number, null).get(0);
-		
-		String sql = "SELECT * FROM exam WHERE (gradeid=? AND type=1) OR (clazzid=? AND type=2)";
-		
-		List<Object> param = new LinkedList<>();
-		param.add(student.getGradeid());
-		param.add(student.getClazzid());
-		
-		//获取数据
-		List<Exam> list = dao.getExamList(sql, param);
-		
-		//格式化Map,以json格式返回数据
-        String result = JSONArray.fromObject(list).toString();
-		
-		return result;
-	}
-	
 	
 }

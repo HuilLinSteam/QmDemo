@@ -4,50 +4,38 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-/**
- * 考试类
- * 
- * 考试分为年级统考和平时考试两种
- * 年级统考由管理员添加一次考试
- * 平时考试由科任老师添加考试
- * @author bojiangzhou
- *
- */
+
 public class Exam {
 	
-	/**
-	 * 考试类型：年级统考
-	 */
+	
 	public static final int EXAM_GRADE_TYPE = 1;
 	
-	/**
-	 * 考试类型：平时考试
-	 */
+	
 	public static final int EXAM_NORMAL_TYPE = 2;
 	
-	private int id; //ID
+	private int id; 
 	
-	private String name; //考试名称
+	private String name; 
 	
-	private Date time; //考试时间
+	private Date time; 
 	
-	private String etime; //考试时间
+	private String etime; 
 	
-	private String remark; //备注
+	private String remark; 
 	
-	private Grade grade; //考试年级
+	private Grade grade; 
 	
-	private int gradeid; //年级ID
+	private int gradeid; 
 	
-	private Clazz clazz; //考试的班级: 平时考试涉及到某个班级，统考则为所有班级
+	private Clazz clazz; 
 	
-	private int clazzid; //班级ID
+	private int clazzid; 
 	
-	private Course course; //考试科目：单科情况
+	private Course course; 
 	
-	private int courseid; //考试科目ID
+	private int courseid; 
 	
-	private int type = EXAM_GRADE_TYPE; //考试类型:默认为1,1为年级统考，2为平时考试
+	private int type = EXAM_GRADE_TYPE; 
 
 	public int getId() {
 		return id;
@@ -70,7 +58,7 @@ public class Exam {
 	}
 
 	public void setTime(Date time) {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy 年  MM 月  dd 日");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy ��  MM ��  dd ��");
 		this.etime = sdf.format(time);
 		this.time = time;
 	}
@@ -162,4 +150,11 @@ public class Exam {
 		this.courseid = courseid;
 	}
 
+	@Override
+	public String toString() {
+		return "Exam [id=" + id + ", name=" + name + ", time=" + time + ", etime=" + etime + ", remark=" + remark
+				+ ", grade=" + grade + ", gradeid=" + gradeid + ", clazz=" + clazz + ", clazzid=" + clazzid
+				+ ", course=" + course + ", courseid=" + courseid + ", type=" + type + "]";
+	}
+	
 }
