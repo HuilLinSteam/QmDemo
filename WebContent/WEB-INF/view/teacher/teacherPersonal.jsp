@@ -68,7 +68,7 @@
 		
 		//设置编辑老师窗口
 	    $("#editDialog").dialog({
-	    	title: "修改密码",
+	    	title: "个人信息修改",
 	    	width: 500,
 	    	height: 400,
 	    	fit: true,
@@ -145,7 +145,7 @@
 </head>
 <body>
 	
-	<!-- 修改老师窗口 -->
+	<!-- 修改个人信息窗口 -->
 	<div id="editDialog" style="padding: 20px">
 		<div style="width: 300px; height: 400px;float: right; margin: 20px 120px 0 0;">
 	    	<img id="user_photo" alt="照片" style="margin-bottom: 30px;display: block;max-width: 250px; max-height: 300px;" title="照片" src="PhotoAction-getPhoto" />
