@@ -3,10 +3,10 @@
 	<default-config>
 		<property name="driverClass">com.mysql.jdbc.Driver</property>
 		<property name="jdbcUrl">
-		jdbc:mysql://localhost:3306/ssms
+		jdbc:mysql://localhost:3306/ssms?userUnicode=true&amp;characterEncoding=UTF8
 		</property>
 		<property name="user">root</property>
-		<property name="password">root</property>
+		<property name="password">123456</property>
 	</default-config>
 	<!--我更新了-->
 </c3p0-config>

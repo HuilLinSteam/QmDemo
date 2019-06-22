@@ -18,4 +18,5 @@
 		
 	</package>
 	<include file="struts_zcr.xml"></include>
+	<include file="struts_lgl.xml"></include>
 </struts>

@@ -29,47 +29,47 @@ import com.tools.MysqlTool;
 public class ExamDaoImpl extends BaseDaoImpl implements ExamDaoInter {
 
 	public List<Exam> getExamList(String sql, List<Object> param) {
-		//æ•°æ®é›†åˆ
+		//Êı¾İ¼¯ºÏ
 		List<Exam> list = new LinkedList<>();
 		try {
-			//è·å–æ•°æ®åº“è¿æ¥
+			//»ñÈ¡Êı¾İ¿âÁ¬½Ó
 			Connection conn = MysqlTool.getConnection();
-			//é¢„ç¼–è¯‘
+			//Ô¤±àÒë
 			PreparedStatement ps = conn.prepareStatement(sql);
-			//è®¾ç½®å‚æ•°
+			//ÉèÖÃ²ÎÊı
 			if(param != null && param.size() > 0){
 				for(int i = 0;i < param.size();i++){
 					ps.setObject(i+1, param.get(i));
 				}
 			}
-			//æ‰§è¡Œsqlè¯­å¥
+			//Ö´ĞĞsqlÓï¾ä
 			ResultSet rs = ps.executeQuery();
-			//è·å–å…ƒæ•°æ®
+			//»ñÈ¡ÔªÊı¾İ
 			ResultSetMetaData meta = rs.getMetaData();
-			//éå†ç»“æœé›†
+			//±éÀú½á¹û¼¯
 			while(rs.next()){
-				//åˆ›å»ºå¯¹è±¡
+				//´´½¨¶ÔÏó
 				Exam exam = new Exam();
-				//éå†æ¯ä¸ªå­—æ®µ
+				//±éÀúÃ¿¸ö×Ö¶Î
 				for(int i=1;i <= meta.getColumnCount();i++){
 					String field = meta.getColumnName(i);
 					Object value = rs.getObject(field);
 					BeanUtils.setProperty(exam, field, rs.getObject(field));
 				}
-				//æŸ¥è¯¢ç­çº§
+				//²éÑ¯°à¼¶
 				Clazz clazz = (Clazz) getObject(Clazz.class, "SELECT * FROM clazz WHERE id=?", new Object[]{exam.getClazzid()});
-				//æŸ¥è¯¢å¹´çº§
+				//²éÑ¯Äê¼¶
 				Grade grade = (Grade) getObject(Grade.class, "SELECT * FROM grade WHERE id=?", new Object[]{exam.getGradeid()});
-				//æŸ¥è¯¢ç§‘ç›®
+				//²éÑ¯¿ÆÄ¿
 				Course course = (Course) getObject(Course.class, "SELECT * FROM course WHERE id=?", new Object[]{exam.getCourseid()});
-				//æ·»åŠ 
+				//Ìí¼Ó
 				exam.setClazz(clazz);
 				exam.setGrade(grade);
 				exam.setCourse(course);
-				//æ·»åŠ åˆ°é›†åˆ
+				//Ìí¼Óµ½¼¯ºÏ
 				list.add(exam);
 			}
-			//å…³é—­è¿æ¥
+			//¹Ø±ÕÁ¬½Ó
 			MysqlTool.closeConnection();
 			MysqlTool.close(ps);
 			MysqlTool.close(rs);

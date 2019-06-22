@@ -5,49 +5,49 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * è€ƒè¯•ç±»
+ * ¿¼ÊÔÀà
  * 
- * è€ƒè¯•åˆ†ä¸ºå¹´çº§ç»Ÿè€ƒå’Œå¹³æ—¶è€ƒè¯•ä¸¤ç§
- * å¹´çº§ç»Ÿè€ƒç”±ç®¡ç†å‘˜æ·»åŠ ä¸€æ¬¡è€ƒè¯•
- * å¹³æ—¶è€ƒè¯•ç”±ç§‘ä»»è€å¸ˆæ·»åŠ è€ƒè¯•
+ * ¿¼ÊÔ·ÖÎªÄê¼¶Í³¿¼ºÍÆ½Ê±¿¼ÊÔÁ½ÖÖ
+ * Äê¼¶Í³¿¼ÓÉ¹ÜÀíÔ±Ìí¼ÓÒ»´Î¿¼ÊÔ
+ * Æ½Ê±¿¼ÊÔÓÉ¿ÆÈÎÀÏÊ¦Ìí¼Ó¿¼ÊÔ
  * @author bojiangzhou
  *
  */
 public class Exam {
 	
 	/**
-	 * è€ƒè¯•ç±»å‹ï¼šå¹´çº§ç»Ÿè€ƒ
+	 * ¿¼ÊÔÀàĞÍ£ºÄê¼¶Í³¿¼
 	 */
 	public static final int EXAM_GRADE_TYPE = 1;
 	
 	/**
-	 * è€ƒè¯•ç±»å‹ï¼šå¹³æ—¶è€ƒè¯•
+	 * ¿¼ÊÔÀàĞÍ£ºÆ½Ê±¿¼ÊÔ
 	 */
 	public static final int EXAM_NORMAL_TYPE = 2;
 	
 	private int id; //ID
 	
-	private String name; //è€ƒè¯•åç§°
+	private String name; //¿¼ÊÔÃû³Æ
 	
-	private Date time; //è€ƒè¯•æ—¶é—´
+	private Date time; //¿¼ÊÔÊ±¼ä
 	
-	private String etime; //è€ƒè¯•æ—¶é—´
+	private String etime; //¿¼ÊÔÊ±¼ä
 	
-	private String remark; //å¤‡æ³¨
+	private String remark; //±¸×¢
 	
-	private Grade grade; //è€ƒè¯•å¹´çº§
+	private Grade grade; //¿¼ÊÔÄê¼¶
 	
-	private int gradeid; //å¹´çº§ID
+	private int gradeid; //Äê¼¶ID
 	
-	private Clazz clazz; //è€ƒè¯•çš„ç­çº§: å¹³æ—¶è€ƒè¯•æ¶‰åŠåˆ°æŸä¸ªç­çº§ï¼Œç»Ÿè€ƒåˆ™ä¸ºæ‰€æœ‰ç­çº§
+	private Clazz clazz; //¿¼ÊÔµÄ°à¼¶: Æ½Ê±¿¼ÊÔÉæ¼°µ½Ä³¸ö°à¼¶£¬Í³¿¼ÔòÎªËùÓĞ°à¼¶
 	
-	private int clazzid; //ç­çº§ID
+	private int clazzid; //°à¼¶ID
 	
-	private Course course; //è€ƒè¯•ç§‘ç›®ï¼šå•ç§‘æƒ…å†µ
+	private Course course; //¿¼ÊÔ¿ÆÄ¿£ºµ¥¿ÆÇé¿ö
 	
-	private int courseid; //è€ƒè¯•ç§‘ç›®ID
+	private int courseid; //¿¼ÊÔ¿ÆÄ¿ID
 	
-	private int type = EXAM_GRADE_TYPE; //è€ƒè¯•ç±»å‹:é»˜è®¤ä¸º1,1ä¸ºå¹´çº§ç»Ÿè€ƒï¼Œ2ä¸ºå¹³æ—¶è€ƒè¯•
+	private int type = EXAM_GRADE_TYPE; //¿¼ÊÔÀàĞÍ:Ä¬ÈÏÎª1,1ÎªÄê¼¶Í³¿¼£¬2ÎªÆ½Ê±¿¼ÊÔ
 
 	public int getId() {
 		return id;
@@ -70,7 +70,7 @@ public class Exam {
 	}
 
 	public void setTime(Date time) {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy å¹´  MM æœˆ  dd æ—¥");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy Äê  MM ÔÂ  dd ÈÕ");
 		this.etime = sdf.format(time);
 		this.time = time;
 	}

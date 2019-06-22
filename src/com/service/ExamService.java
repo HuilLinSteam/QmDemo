@@ -28,7 +28,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 /**
- * æ•™å¸ˆç±»æœåŠ¡å±‚
+ * ½ÌÊ¦Àà·şÎñ²ã
  * @author bojiangzhou
  *
  */
@@ -41,19 +41,19 @@ public class ExamService {
 	}
 	
 	/**
-	 * è·å–è€ƒè¯•ä¿¡æ¯
-	 * @param exam å‚æ•°
-	 * @param page åˆ†é¡µ
+	 * »ñÈ¡¿¼ÊÔĞÅÏ¢
+	 * @param exam ²ÎÊı
+	 * @param page ·ÖÒ³
 	 * @return
 	 */
 	public String getExamList(Exam exam, Page page) {
-		//sqlè¯­å¥
+		//sqlÓï¾ä
 		StringBuffer sb = new StringBuffer("SELECT * FROM exam ");
-		//å‚æ•°
+		//²ÎÊı
 		List<Object> param = new LinkedList<>();
-		//åˆ¤æ–­æ¡ä»¶
+		//ÅĞ¶ÏÌõ¼ş
 		if(exam != null){ 
-			if(exam.getGradeid() != 0){//æ¡ä»¶ï¼šå¹´çº§
+			if(exam.getGradeid() != 0){//Ìõ¼ş£ºÄê¼¶
 				int gradeid = exam.getGradeid();
 				param.add(gradeid);
 				sb.append("AND gradeid=? ");
@@ -64,44 +64,44 @@ public class ExamService {
 				sb.append("AND clazzid=? ");
 			}
 		}
-		//æ·»åŠ æ’åº
+		//Ìí¼ÓÅÅĞò
 		sb.append("ORDER BY id DESC ");
-		//åˆ†é¡µ
+		//·ÖÒ³
 		if(page != null){
 			param.add(page.getStart());
 			param.add(page.getSize());
 			sb.append("LIMIT ?,?");
 		}
 		String sql = sb.toString().replaceFirst("AND", "WHERE");
-		//è·å–æ•°æ®
+		//»ñÈ¡Êı¾İ
 		List<Exam> list = dao.getExamList(sql, param);
-		//è·å–æ€»è®°å½•æ•°
+		//»ñÈ¡×Ü¼ÇÂ¼Êı
 		long total = getCount(exam);
-		//å®šä¹‰Map
+		//¶¨ÒåMap
 		Map<String, Object> jsonMap = new HashMap<String, Object>();  
-		//totalé”® å­˜æ”¾æ€»è®°å½•æ•°ï¼Œå¿…é¡»çš„
+		//total¼ü ´æ·Å×Ü¼ÇÂ¼Êı£¬±ØĞëµÄ
         jsonMap.put("total", total);
-        //rowsé”® å­˜æ”¾æ¯é¡µè®°å½• list 
+        //rows¼ü ´æ·ÅÃ¿Ò³¼ÇÂ¼ list 
         jsonMap.put("rows", list); 
-        //æ ¼å¼åŒ–Map,ä»¥jsonæ ¼å¼è¿”å›æ•°æ®
+        //¸ñÊ½»¯Map,ÒÔjson¸ñÊ½·µ»ØÊı¾İ
         String result = JSONObject.fromObject(jsonMap).toString();
-        //è¿”å›
+        //·µ»Ø
 		return result;
 	}
 	
 	/**
-	 * è·å–è®°å½•æ•°
+	 * »ñÈ¡¼ÇÂ¼Êı
 	 * @param exam
 	 * @return
 	 */
 	private long getCount(Exam exam){
-		//sqlè¯­å¥
+		//sqlÓï¾ä
 		StringBuffer sb = new StringBuffer("SELECT COUNT(*) FROM exam ");
-		//å‚æ•°
+		//²ÎÊı
 		List<Object> param = new LinkedList<>();
-		//åˆ¤æ–­æ¡ä»¶
+		//ÅĞ¶ÏÌõ¼ş
 		if(exam != null){ 
-			if(exam.getGrade() != null){//æ¡ä»¶ï¼šå¹´çº§
+			if(exam.getGrade() != null){//Ìõ¼ş£ºÄê¼¶
 				int gradeid = exam.getGradeid();
 				param.add(gradeid);
 				sb.append("AND gradeid=? ");
@@ -120,17 +120,17 @@ public class ExamService {
 	}
 	
 	/**
-	 * æ·»åŠ è€ƒè¯•
+	 * Ìí¼Ó¿¼ÊÔ
 	 * @param exam
 	 * @throws Exception
 	 */
 	public void addExam(Exam exam) throws Exception {
 		Connection conn = MysqlTool.getConnection();
 		try {
-			//å¼€å¯äº‹åŠ¡
+			//¿ªÆôÊÂÎñ
 			MysqlTool.startTransaction();
 			
-			//æ·»åŠ è€ƒè¯•ä¿¡æ¯
+			//Ìí¼Ó¿¼ÊÔĞÅÏ¢
 			int examid = dao.insertReturnKeysTransaction(conn, 
 					"INSERT INTO exam(name, time, remark, type, gradeid, clazzid, courseid) value(?,?,?,?,?,?,?)", 
 					new Object[]{
@@ -143,28 +143,28 @@ public class ExamService {
 						exam.getCourseid()
 					});
 			
-			//æ·»åŠ å­¦ç”Ÿæˆç»©è¡¨
+			//Ìí¼ÓÑ§Éú³É¼¨±í
 			String sql = "INSERT INTO escore(examid,clazzid,studentid,gradeid,courseid) value(?,?,?,?,?)";
 			
-			if(exam.getType() == Exam.EXAM_GRADE_TYPE){ //å¹´çº§ç»Ÿè€ƒ
+			if(exam.getType() == Exam.EXAM_GRADE_TYPE){ //Äê¼¶Í³¿¼
 				
-				//æŸ¥è¯¢è¯¥å¹´çº§çš„è¯¾ç¨‹
+				//²éÑ¯¸ÃÄê¼¶µÄ¿Î³Ì
 				List<Object> couObjList = dao.getList(Course.class, 
 						"SELECT courseid id FROM grade_course WHERE gradeid=?", 
 						new Object[]{exam.getGradeid()});
 				
-				//æŸ¥è¯¢è¯¥å¹´çº§ä¸‹çš„å­¦ç”Ÿ
+				//²éÑ¯¸ÃÄê¼¶ÏÂµÄÑ§Éú
 				List<Object> stuList = dao.getList(Student.class, 
 						"SELECT id, clazzid FROM student WHERE gradeid=?",
 						new Object[]{exam.getGradeid()});
 				
-				//è½¬æ¢ç±»å‹
+				//×ª»»ÀàĞÍ
 				List<Course> couList = new LinkedList<>();
 				for(Object obj : couObjList){
 					Course course = (Course) obj;
 					couList.add(course);
 				}
-				//æ‰¹é‡å‚æ•°
+				//ÅúÁ¿²ÎÊı
 				Object[][] param = new Object[stuList.size()*couList.size()][5];
 				int index = 0;
 				for(int i = 0;i < stuList.size();i++){
@@ -179,17 +179,17 @@ public class ExamService {
 						index++;
 					}
 				}
-				//æ‰¹é‡æ·»åŠ å­¦ç”Ÿè€ƒè¯•è¡¨
+				//ÅúÁ¿Ìí¼ÓÑ§Éú¿¼ÊÔ±í
 				dao.insertBatchTransaction(conn, sql, param);
 				
-			} else{  //å¹³æ—¶è€ƒè¯•
+			} else{  //Æ½Ê±¿¼ÊÔ
 				
-				//æŸ¥è¯¢è¯¥ç­çº§ä¸‹çš„å­¦ç”Ÿ
+				//²éÑ¯¸Ã°à¼¶ÏÂµÄÑ§Éú
 				List<Object> stuList = dao.getList(Student.class, 
 						"SELECT id FROM student WHERE clazzid=?",
 						new Object[]{exam.getClazzid()});
 				
-				//æ‰¹é‡å‚æ•°
+				//ÅúÁ¿²ÎÊı
 				Object[][] param = new Object[stuList.size()][5];
 				for(int i = 0;i < stuList.size();i++){
 					Student student = (Student) stuList.get(i);
@@ -199,14 +199,14 @@ public class ExamService {
 					param[i][3] = exam.getGradeid();
 					param[i][4] = exam.getCourseid();
 				}
-				//æ‰¹é‡æ·»åŠ å­¦ç”Ÿè€ƒè¯•è¡¨
+				//ÅúÁ¿Ìí¼ÓÑ§Éú¿¼ÊÔ±í
 				dao.insertBatchTransaction(conn, sql, param);
 			}
 			
-			//æäº¤äº‹åŠ¡
+			//Ìá½»ÊÂÎñ
 			MysqlTool.commit();
 		} catch (Exception e) {
-			//å›æ»šäº‹åŠ¡
+			//»Ø¹öÊÂÎñ
 			MysqlTool.rollback();
 			e.printStackTrace();
 			throw e;
@@ -216,25 +216,25 @@ public class ExamService {
 	}
 	
 	/**
-	 * åˆ é™¤è€ƒè¯•
+	 * É¾³ı¿¼ÊÔ
 	 * @param ids 
 	 * @throws Exception 
 	 */
 	public void deleteExam(int id) throws Exception{
-		//è·å–è¿æ¥
+		//»ñÈ¡Á¬½Ó
 		Connection conn = MysqlTool.getConnection();
-		//å¼€å¯äº‹åŠ¡
+		//¿ªÆôÊÂÎñ
 		MysqlTool.startTransaction();
 		try {
-			//åˆ é™¤æˆç»©è¡¨
+			//É¾³ı³É¼¨±í
 			dao.deleteTransaction(conn, "DELETE FROM escore WHERE examid=?", new Object[]{id});
-			//åˆ é™¤è€ƒè¯•
+			//É¾³ı¿¼ÊÔ
 			dao.deleteTransaction(conn, "DELETE FROM exam WHERE id =?", new Object[]{id});
 			
-			//æäº¤äº‹åŠ¡
+			//Ìá½»ÊÂÎñ
 			MysqlTool.commit();
 		} catch (Exception e) {
-			//å›æ»šäº‹åŠ¡
+			//»Ø¹öÊÂÎñ
 			MysqlTool.rollback();
 			e.printStackTrace();
 			throw e;
@@ -244,12 +244,12 @@ public class ExamService {
 	}
 
 	/**
-	 * è·å–æŸè€å¸ˆçš„è€ƒè¯•
+	 * »ñÈ¡Ä³ÀÏÊ¦µÄ¿¼ÊÔ
 	 * @param id
 	 * @return
 	 */
 	public String teacherExamList(String number) {
-		//è·å–æ•™å¸ˆä¿¡æ¯
+		//»ñÈ¡½ÌÊ¦ĞÅÏ¢
 		Teacher teacher = new TeacherService().getTeacher(number);
 		
 		List<CourseItem> itemList = teacher.getCourseList();
@@ -268,25 +268,25 @@ public class ExamService {
 		sb.append(") AND type=1) OR (courseid IN (");
 		sb.append(c.toString().replaceFirst(",", ""));
 		sb.append(") AND type=2)");
-		//sqlè¯­å¥
+		//sqlÓï¾ä
 		String sql = sb.toString();
-		//è·å–æ•°æ®
+		//»ñÈ¡Êı¾İ
 		List<Exam> list = dao.getExamList(sql, null);
 		
-        //æ ¼å¼åŒ–Map,ä»¥jsonæ ¼å¼è¿”å›æ•°æ®
+        //¸ñÊ½»¯Map,ÒÔjson¸ñÊ½·µ»ØÊı¾İ
         String result = JSONArray.fromObject(list).toString();
-        //è¿”å›
+        //·µ»Ø
 		return result;
 	}
 	
 	/**
-	 * è·å–æŸä¸ªå­¦ç”Ÿè€ƒè¯•åˆ—è¡¨
+	 * »ñÈ¡Ä³¸öÑ§Éú¿¼ÊÔÁĞ±í
 	 * @param number
 	 * @return
 	 */
 	public String studentExamList(String number) {
 		
-		//è·å–å­¦ç”Ÿè¯¦ç»†ä¿¡æ¯
+		//»ñÈ¡Ñ§ÉúÏêÏ¸ĞÅÏ¢
 		Student student = new StudentDaoImpl().getStudentList("SELECT * FROM student WHERE number="+number, null).get(0);
 		
 		String sql = "SELECT * FROM exam WHERE (gradeid=? AND type=1) OR (clazzid=? AND type=2)";
@@ -295,10 +295,10 @@ public class ExamService {
 		param.add(student.getGradeid());
 		param.add(student.getClazzid());
 		
-		//è·å–æ•°æ®
+		//»ñÈ¡Êı¾İ
 		List<Exam> list = dao.getExamList(sql, param);
 		
-		//æ ¼å¼åŒ–Map,ä»¥jsonæ ¼å¼è¿”å›æ•°æ®
+		//¸ñÊ½»¯Map,ÒÔjson¸ñÊ½·µ»ØÊı¾İ
         String result = JSONArray.fromObject(list).toString();
 		
 		return result;

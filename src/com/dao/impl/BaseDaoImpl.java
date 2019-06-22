@@ -32,10 +32,10 @@ public class BaseDaoImpl implements BaseDaoInter{
 
 	@Override
 	public List<Object> getList(Class type, String sql, Object[] param) {
-		QueryRunner qr = new QueryRunner(MysqlTool.getDataSource());
+		QueryRunner qr = new QueryRunner(MysqlTool.getDataSource());		//QueryRunner简化jdbc的DBUtil
 		List<Object> list = new LinkedList<>();
 		try {
-			list = (List<Object>) qr.query(sql, new BeanListHandler(type), param);
+			list = (List<Object>) qr.query(sql, new BeanListHandler(type), param);  //将结果集中的每一行数据都封装到一个对应的JavaBean实例中，存放到List里。
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

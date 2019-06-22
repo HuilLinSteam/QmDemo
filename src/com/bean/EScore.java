@@ -1,7 +1,7 @@
 package com.bean;
 
 /**
- * è€ƒè¯•æˆç»©ç±»
+ * ¿¼ÊÔ³É¼¨Àà
  * @author bojiangzhou
  *
  */
@@ -9,23 +9,23 @@ public class EScore {
 	
 	private int id; //ID
 	
-	private Exam exam; //è€ƒè¯•
+	private Exam exam; //¿¼ÊÔ
 	
-	private int examid; //è€ƒè¯•ID
+	private int examid; //¿¼ÊÔID
 	
-	private Clazz clazz; //è€ƒè¯•ç­çº§
+	private Clazz clazz; //¿¼ÊÔ°à¼¶
 	
-	private int clazzid; //ç­çº§ID
+	private int clazzid; //°à¼¶ID
 	
-	private Course course; //è€ƒè¯•ç§‘ç›®
+	private Course course; //¿¼ÊÔ¿ÆÄ¿
 	
-	private int courseid; //ç§‘ç›®ID
+	private int courseid; //¿ÆÄ¿ID
 	
-	private Student student; //è€ƒè¯•å­¦ç”Ÿ
+	private Student student; //¿¼ÊÔÑ§Éú
 	
-	private int studentid; //å­¦ç”ŸID
+	private int studentid; //Ñ§ÉúID
 	
-	private int score; //è€ƒè¯•æˆç»©
+	private int score; //¿¼ÊÔ³É¼¨
 
 	public int getId() {
 		return id;

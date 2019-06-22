@@ -17,7 +17,7 @@
 	 var _menus = {"menus":[
 						{"menuid":"1","icon":"","menuname":"成绩统计分析",
 							"menus":[
-									{"menuid":"11","menuname":"考试列表","icon":"icon-exam","url":"ExamServlet?method=toExamListView"}
+									{"menuid":"11","menuname":"考试列表","icon":"icon-exam","url":"ExamAction-toExamListView"}
 								]
 						},
 						{"menuid":"2","icon":"","menuname":"学生信息管理",

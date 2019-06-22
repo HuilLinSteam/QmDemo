@@ -20,7 +20,7 @@
 	        collapsible: false,//是否可折叠的 
 	        fit: true,//自动大小 
 	        method: "post",
-	        url:"ExamServlet?method=ExamList&t="+new Date().getTime(),
+	        url:"ExamAction-ExamList?t="+new Date().getTime(),
 	        idField:'id', 
 	        singleSelect: true,//是否单选 
 	        pagination: true,//分页控件 
@@ -32,7 +32,7 @@
 				{field:'chk',checkbox: true,width:50},
  		        {field:'id',title:'ID',width:50, sortable: true},    
  		        {field:'name',title:'考试名称',width:200, sortable: true},    
- 		        {field:'etime',title:'考试时间',width:150},
+ 		        {field:'etime',title:'考试时间',width:180},
  		        {field:'type',title:'考试类型',width:100, 
  		        	formatter: function(value,row,index){
 						if(value == 1){
@@ -97,7 +97,7 @@
             		if(r){
             			$.ajax({
 							type: "post",
-							url: "ExamServlet?method=DeleteExam",
+							url: "ExamAction-deleteExam",
 							data: {id: id},
 							success: function(msg){
 								if(msg == "success"){
@@ -123,11 +123,10 @@
             	$.messager.alert("消息提醒", "请选择考试进行统计!", "warning");
             } else{
             	var data = {id: exam.id, gradeid: exam.gradeid, clazzid:exam.clazzid,courseid:exam.courseid, type: exam.type};
-            	
             	//动态显示该次考试的科目
             	$.ajax({
             		type: "post",
-					url: "ScoreServlet?method=ColumnList",
+					url: "ScoreAction-columnList",
 					data: data,
 					dataType: "json",
 					async: false,
@@ -165,7 +164,7 @@
 					}
             	});
             	setTimeout(function(){
-			    	$("#escoreList").datagrid("options").url = "ScoreServlet?method=ScoreList&t="+new Date().getTime();
+			    	$("#escoreList").datagrid("options").url = "ScoreAction-scoreList?t="+new Date().getTime();
 			    	$("#escoreList").datagrid("options").queryParams = data;
 			    	$("#escoreList").datagrid("reload");
 			    	
@@ -200,7 +199,7 @@
 							var gradeid = $("#add_gradeList").combobox("getValue");
 							$.ajax({
 								type: "post",
-								url: "ExamServlet?method=AddExam&t="+new Date().getTime(),
+								url: "ExamAction-addExam?t="+new Date().getTime(),
 								data: $("#addForm").serialize(),
 								success: function(msg){
 									if(msg == "success"){
@@ -257,7 +256,7 @@
 	  		multiple: false, //可多选
 	  		editable: false, //不可编辑
 	  		method: "post",
-	  		url: "GradeServlet?method=GradeList&t="+new Date().getTime(),
+	  		url: "GradeAction-gradeList?t="+new Date().getTime(),
 	  		onChange: function(newValue, oldValue){
 	  		//加载该年级下的班级
 	  			$("#clazzList").combobox("clear");
@@ -280,7 +279,7 @@
 	  		multiple: false, //可多选
 	  		editable: false, //不可编辑
 	  		method: "post",
-	  		url: "ClazzServlet?method=ClazzList&t="+new Date().getTime(),
+	  		url: "ClazzAction-clazzList?t="+new Date().getTime(),
 	  		onChange: function(newValue, oldValue){
 	  			//加载班级下的学生
 	  			$('#dataList').datagrid("options").queryParams = {clazzid: newValue};
@@ -296,7 +295,7 @@
 	  		multiple: false, //不可多选
 	  		editable: false, //不可编辑
 	  		method: "post",
-	  		url: "GradeServlet?method=GradeList&t="+new Date().getTime(),
+	  		url: "GradeAction-gradeList?t="+new Date().getTime(),
 			onLoadSuccess: function(){
 				//默认选择第一条数据
 				var data = $(this).combobox("getData");
@@ -348,7 +347,7 @@
 	    	}
         	//var data = {id: exam.id, gradeid: exam.gradeid, clazzid:clazzid,courseid:exam.courseid, type: exam.type};
 	    	
-        	var url = "ScoreServlet?method=ExportScore&id="+exam.id+"&gradeid="+exam.gradeid+"&clazzid="+clazzid+"&courseid="+exam.courseid+"&type="+exam.type;
+        	var url = "ScoreAction-exportScore?exam.id="+exam.id+"&exam.gradeid="+exam.gradeid+"&exam.clazzid="+clazzid+"&exam.courseid="+exam.courseid+"&exam.type="+exam.type;
 	    	
 	  		window.open(url, "_blank");
 	  	});
@@ -362,12 +361,12 @@
 	  		multiple: false, //可多选
 	  		editable: false, //不可编辑
 	  		method: "post",
-	  		url: "ClazzServlet?method=ClazzList&t="+new Date().getTime(),
+	  		url: "ClazzAction-clazzList?t="+new Date().getTime(),
 	  		onChange: function(newValue, oldValue){
 	  			var exam = $("#dataList").datagrid("getSelected");
             	var data = {id: exam.id, gradeid: exam.gradeid, clazzid:newValue,courseid:exam.courseid, type: exam.type};
 	  			
-	  			$("#escoreList").datagrid("options").url = "ScoreServlet?method=ScoreList&t="+new Date().getTime();
+	  			$("#escoreList").datagrid("options").url = "ScoreAction-scoreList?t="+new Date().getTime();
 		    	$("#escoreList").datagrid("options").queryParams = data;
 		    	$("#escoreList").datagrid("reload");
 	  		}
@@ -413,26 +412,26 @@
 	    	<table cellpadding="8" >
 	    		<tr>
 	    			<td>名称:</td>
-	    			<td><input id="add_name"  class="easyui-textbox" style="width: 200px; height: 30px;" type="text" name="name" data-options="required:true, missingMessage:'请输入名称'" /></td>
+	    			<td><input id="add_name"  class="easyui-textbox" style="width: 200px; height: 30px;" type="text" name="exam.name" data-options="required:true, missingMessage:'请输入名称'" /></td>
 	    		</tr>
 	    		<tr>
 	    			<td>考试时间:</td>
-	    			<td><input id="add_time" style="width: 200px; height: 30px;" class="easyui-datebox" type="text" name="etime" data-options="required:true, missingMessage:'请选择日期', editable:false" /></td>
+	    			<td><input id="add_time" style="width: 200px; height: 30px;" class="easyui-datebox" type="text" name="exam.etime" data-options="required:true, missingMessage:'请选择日期', editable:false" /></td>
 	    		</tr>
 	    		<tr>
 	    			<td>考试类型:</td>
 	    			<td>
 	    				<input style="width: 200px; height: 30px;" class="easyui-textbox" data-options="readonly: true" type="text" value="年级统考" />
-	    				<input type="hidden" name="type"  value="1"/>
+	    				<input type="hidden" name="exam.type"  value="1"/>
 	    			</td>
 	    		</tr>
 	    		<tr>
 	    			<td>年级:</td>
-	    			<td><input id="add_gradeList" style="width: 200px; height: 30px;" class="easyui-textbox" name="gradeid" /></td>
+	    			<td><input id="add_gradeList" style="width: 200px; height: 30px;" class="easyui-textbox" name="exam.gradeid" /></td>
 	    		</tr>
 	    		<tr>
 	    			<td>备注:</td>
-	    			<td><input id="add_remark" style="width: 200px; height: 70px;" class="easyui-textbox" data-options="multiline: true," name="remark" /></td>
+	    			<td><input id="add_remark" style="width: 200px; height: 70px;" class="easyui-textbox" data-options="multiline: true," name="exam.remark" /></td>
 	    		</tr>
 	    	</table>
 	    </form>

@@ -17,11 +17,14 @@ public class ClazzAction extends ActionSupport{
 		HttpServletRequest request = ServletActionContext.getRequest();
 		HttpServletResponse response = ServletActionContext.getResponse();
 		//获取参数
+		
 		String gradeid = request.getParameter("gradeid");
 		
+		System.out.println(gradeid);
 		if(StringTool.isEmpty(gradeid)){
 			return;
 		}
+		
 		String result = service.getClazzList(gradeid);
 		//返回数据
 		response.setContentType("text/html;charset=UTF-8"); 
