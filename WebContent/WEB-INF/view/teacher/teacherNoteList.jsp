@@ -10,6 +10,41 @@
 	<script type="text/javascript" src="easyui/jquery.min.js"></script>
 	<script type="text/javascript" src="easyui/jquery.easyui.min.js"></script>
 	<script type="text/javascript" src="easyui/js/validateExtends.js"></script>
+</head>
+<body>
+	<!-- 数据列表 -->
+	<table id="dataList" cellspacing="0" cellpadding="0"> 
+	    
+	</table> 
+	
+	<!-- 查看窗口 -->
+	<div id="editDialog" style="padding: 10px">  
+    	<form id="editForm" method="post">
+	    	<table id="editTable" border=0 style="width:800px; table-layout:fixed;" cellpadding="6" >
+	    		<tr>
+	    			<td style="width:40px">工号:</td>
+	    			<td colspan="3"><input id="edit_number" data-options="readonly: true" class="easyui-textbox" style="width: 200px; height: 30px;" type="text" name="number" /></td>
+	    			<td style="width:80px"></td>
+	    		</tr>
+	    		<tr>
+	    			<td>姓名:</td>
+	    			<td><input id="edit_name" style="width: 200px; height: 30px;" class="easyui-textbox" type="text" name="name" data-options="readonly: true" /></td>
+	    		</tr>
+	    		<tr>
+	    			<td>性别:</td>
+	    			<td><select id="edit_sex" class="easyui-combobox" data-options="editable: false, readonly:true, panelHeight: 50, width: 60, height: 30" name="sex"><option value="男">男</option><option value="女">女</option></select></td>
+	    		</tr>
+	    		<tr>
+	    			<td>电话:</td>
+	    			<td><input id="edit_phone" style="width: 200px; height: 30px;" class="easyui-textbox" type="text" name="phone" data-options="readonly: true" /></td>
+	    		</tr>
+	    		<tr>
+	    			<td>QQ:</td>
+	    			<td colspan="4"><input id="edit_qq" style="width: 200px; height: 30px;" class="easyui-textbox" type="text" name="qq"  data-options="readonly: true" /></td>
+	    		</tr>
+	    	</table>
+	    </form>
+	</div>
 	<script type="text/javascript">
 	$(function() {	
 		
@@ -40,8 +75,9 @@
  		        {field:'phone',title:'电话',width:150},
  		        {field:'qq',title:'QQ',width:150},
  		        {field:'courseList',title:'课程',width:500, 
- 		        	formatter: function(value,row,index){
- 						if (row.courseList){
+ 		        	formatter: function(value,row,index){//单元格的格式化函数，需要三个参数：value：字段的值,rowData：行的记录数据,rowIndex：行的索引
+ 		        
+ 		        		if (row.courseList){
  							var courseList = row.courseList;
  							var course = "";
  							for(var i = 0;i < courseList.length;i++){
@@ -103,7 +139,6 @@
 				$("#edit_sex").textbox('setValue', selectRow.sex);
 				$("#edit_phone").textbox('setValue', selectRow.phone);
 				$("#edit_qq").textbox('setValue', selectRow.qq);
-				$("#edit_photo").attr("src", "PhotoAction-getPhoto?type=3&number="+selectRow.number);
 				
 				var courseList = selectRow.courseList;
 				
@@ -151,45 +186,6 @@
 	   	
 	});
 	</script>
-</head>
-<body>
-	<!-- 数据列表 -->
-	<table id="dataList" cellspacing="0" cellpadding="0"> 
-	    
-	</table> 
-	
-	<!-- 查看窗口 -->
-	<div id="editDialog" style="padding: 10px">
-		<div style=" position: absolute; margin-left: 560px; width: 250px; height: 300px; border: 1px solid #EEF4FF">
-	    	<img id="edit_photo" alt="照片" style="max-width: 200px; max-height: 400px;" title="照片" src="" />
-	    </div>   
-    	<form id="editForm" method="post">
-	    	<table id="editTable" border=0 style="width:800px; table-layout:fixed;" cellpadding="6" >
-	    		<tr>
-	    			<td style="width:40px">工号:</td>
-	    			<td colspan="3"><input id="edit_number" data-options="readonly: true" class="easyui-textbox" style="width: 200px; height: 30px;" type="text" name="number" /></td>
-	    			<td style="width:80px"></td>
-	    		</tr>
-	    		<tr>
-	    			<td>姓名:</td>
-	    			<td><input id="edit_name" style="width: 200px; height: 30px;" class="easyui-textbox" type="text" name="name" data-options="readonly: true" /></td>
-	    		</tr>
-	    		<tr>
-	    			<td>性别:</td>
-	    			<td><select id="edit_sex" class="easyui-combobox" data-options="editable: false, readonly:true, panelHeight: 50, width: 60, height: 30" name="sex"><option value="男">男</option><option value="女">女</option></select></td>
-	    		</tr>
-	    		<tr>
-	    			<td>电话:</td>
-	    			<td><input id="edit_phone" style="width: 200px; height: 30px;" class="easyui-textbox" type="text" name="phone" data-options="readonly: true" /></td>
-	    		</tr>
-	    		<tr>
-	    			<td>QQ:</td>
-	    			<td colspan="4"><input id="edit_qq" style="width: 200px; height: 30px;" class="easyui-textbox" type="text" name="qq"  data-options="readonly: true" /></td>
-	    		</tr>
-	    	</table>
-	    </form>
-	</div>
-	
 	
 </body>
 </html>

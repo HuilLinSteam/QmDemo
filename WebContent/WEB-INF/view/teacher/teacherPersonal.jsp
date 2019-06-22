@@ -15,57 +15,6 @@
 	<script type="text/javascript">
 	$(function() {	
 		
-		//修改密码窗口
-	    $("#passwordDialog").dialog({
-	    	title: "修改密码",
-	    	width: 500,
-	    	height: 300,
-	    	iconCls: "icon-add",
-	    	modal: true,
-	    	collapsible: false,
-	    	minimizable: false,
-	    	maximizable: false,
-	    	draggable: true,
-	    	closed: true,
-	    	buttons: [
-	  	    		{
-	  					text:'提交',
-	  					iconCls:'icon-user_add',
-	  					handler:function(){
-	  						var validate = $("#editPassword").form("validate");
-	  						if(!validate){
-	  							$.messager.alert("消息提醒","请检查你输入的数据!","warning");
-	  							return;
-	  						} else{
-	  							$.ajax({
-	  								type: "post",
-	  								url: "SystemAction-editPasswod",
-	  								data: $("#editPassword").serialize(),
-	  								success: function(msg){
-	  									if(msg == "success"){
-	  										$.messager.alert("消息提醒","修改成功，将重新登录","info")
-	  										setTimeout(function(){
-	  											top.location.href = "SystemAction-loginOut";
-	  										}, 1000);
-	  									}
-	  								}
-	  							});
-	  						}
-	  					}
-	  				},
-	  				{
-	  					text:'重置',
-	  					iconCls:'icon-reload',
-	  					handler:function(){
-	  						//清空表单
-	  						$("#old_password").textbox('setValue', "");
-	  						$("#new_password").textbox('setValue', "");
-	  						$("#re_password").textbox('setValue', "");
-	  					}
-	  				}
-	  			],
-	    })
-		
 		//设置编辑老师窗口
 	    $("#editDialog").dialog({
 	    	title: "个人信息修改",
@@ -130,15 +79,57 @@
 			
 	    });
 		
-		$("#uploadBtn").click(function(){
-			$("#uploadForm").submit();
-			setTimeout(function(){
-				var message =  $(window.frames["photo_target"].document).find("#message").text();
-				$.messager.alert("消息提醒",message,"info");
-				
-				$("#user_photo").attr("src", "PhotoAction-getPhoto");
-			}, 1500)
-		});
+	  //修改密码窗口
+	    $("#passwordDialog").dialog({
+	    	title: "修改密码",
+	    	width: 500,
+	    	height: 300,
+	    	iconCls: "icon-add",
+	    	modal: true,
+	    	collapsible: false,
+	    	minimizable: false,
+	    	maximizable: false,
+	    	draggable: true,
+	    	closed: true,
+	    	buttons: [
+	  	    		{
+	  					text:'提交',
+	  					iconCls:'icon-user_add',
+	  					handler:function(){
+	  						var validate = $("#editPassword").form("validate");
+	  						if(!validate){
+	  							$.messager.alert("消息提醒","请检查你输入的数据!","warning");
+	  							return;
+	  						} else{
+	  							$.ajax({
+	  								type: "post",
+	  								url: "SystemAction-editPasswod",
+	  								data: $("#editPassword").serialize(),
+	  								success: function(msg){
+	  									if(msg == "success"){
+	  										$.messager.alert("消息提醒","修改成功，将重新登录","info")
+	  										setTimeout(function(){
+	  											top.location.href = "SystemAction-loginOut";
+	  										}, 1000);
+	  									}
+	  								}
+	  							});
+	  						}
+	  					}
+	  				},
+	  				{
+	  					text:'重置',
+	  					iconCls:'icon-reload',
+	  					handler:function(){
+	  						//清空表单
+	  						$("#old_password").textbox('setValue', "");
+	  						$("#new_password").textbox('setValue', "");
+	  						$("#re_password").textbox('setValue', "");
+	  					}
+	  				}
+	  			],
+	    });
+		
 		
 	})
 	</script>
@@ -147,38 +138,30 @@
 	
 	<!-- 修改个人信息窗口 -->
 	<div id="editDialog" style="padding: 20px">
-		<div style="width: 300px; height: 400px;float: right; margin: 20px 120px 0 0;">
-	    	<img id="user_photo" alt="照片" style="margin-bottom: 30px;display: block;max-width: 250px; max-height: 300px;" title="照片" src="PhotoAction-getPhoto" />
-	    	<form id="uploadForm" method="post" enctype="multipart/form-data" action="PhotoAction-setPhoto" target="photo_target">
-	    		<!-- StudentServlet?method=SetPhoto -->
-		    	<input class="easyui-filebox" name="photo" data-options="prompt:'选择照片'" style="width:200px;">
-		    	<input id="uploadBtn" class="easyui-linkbutton" style="width: 50px; height: 24px;" type="button" value="上传"/>
-		    </form>
-	    </div>   
 	    
     	<form id="editForm">
 	    	<table cellpadding="8" >
 	    		<tr>
 	    			<td>工号:</td>
 	    			<td>
-	    				<input id="edit_number" value="${userDetail.number }" data-options="readonly: true" class="easyui-textbox" style="width: 200px; height: 30px;" type="text" name="number" />
+	    				<input id="edit_number" name="teach.number" value="${userDetail.number }" data-options="readonly: true" class="easyui-textbox" style="width: 200px; height: 30px;" type="text" name="number" />
 	    			</td>
 	    		</tr>
 	    		<tr>
 	    			<td>姓名:</td>
-	    			<td><input id="edit_name" value="${userDetail.name }" style="width: 200px; height: 30px;" class="easyui-textbox" type="text" name="name" data-options="required:true, missingMessage:'请填写姓名'" /></td>
+	    			<td><input id="edit_name" name="teach.name" value="${userDetail.name }" style="width: 200px; height: 30px;" class="easyui-textbox" type="text" name="name" data-options="required:true, missingMessage:'请填写姓名'" /></td>
 	    		</tr>
 	    		<tr>
 	    			<td>性别:</td>
-	    			<td><select id="edit_sex" class="easyui-combobox" data-options="editable: false, panelHeight: 50, width: 60, height: 30" name="sex"><option ${userDetail.sex == '男'? 'selected':''} value="男">男</option><option ${userDetail.sex == '女'? 'selected':''} value="女">女</option></select></td>
+	    			<td><select id="edit_sex" name="teach.sex" class="easyui-combobox" data-options="editable: false, panelHeight: 50, width: 60, height: 30" name="sex"><option ${userDetail.sex == '男'? 'selected':''} value="男">男</option><option ${userDetail.sex == '女'? 'selected':''} value="女">女</option></select></td>
 	    		</tr>
 	    		<tr>
 	    			<td>电话:</td>
-	    			<td><input id="edit_phone"  value="${userDetail.phone }" style="width: 200px; height: 30px;" class="easyui-textbox" type="text" name="phone" validType="mobile" /></td>
+	    			<td><input id="edit_phone" name="teach.phone"  value="${userDetail.phone }" style="width: 200px; height: 30px;" class="easyui-textbox" type="text" name="phone" validType="mobile" /></td>
 	    		</tr>
 	    		<tr>
 	    			<td>QQ:</td>
-	    			<td><input id="edit_qq"  value="${userDetail.qq }" style="width: 200px; height: 30px;" class="easyui-textbox" type="text" name="qq" validType="number"  /></td>
+	    			<td><input id="edit_qq" name="teach.qq"  value="${userDetail.qq }" style="width: 200px; height: 30px;" class="easyui-textbox" type="text" name="qq" validType="number"  /></td>
 	    		</tr>
 	    		<c:forEach var="item" items="${userDetail.courseList}">
 		    		<tr>
@@ -219,9 +202,7 @@
 	    	</table>
 	    </form>
 	</div>
-	
-	<!-- 提交表单处理iframe框架 -->
-	<iframe id="photo_target" name="photo_target"></iframe>    
+	    
 	
 </body>
 </html>

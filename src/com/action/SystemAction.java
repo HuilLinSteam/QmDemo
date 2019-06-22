@@ -19,22 +19,21 @@ public class SystemAction extends ActionSupport{
     
 	private SystemService service = new SystemService();
 	//判断登录的身份，要在struts.xml里写明
-	public String check(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		String method = request.getParameter("method");
-		
-		 if("toAdminView".equalsIgnoreCase(method)){ 
-			request.getRequestDispatcher("/WEB-INF/view/admin/admin.jsp").forward(request, response);
-		} else if("toStudentView".equals(method)){ 
-			request.getRequestDispatcher("/WEB-INF/view/student/student.jsp").forward(request, response);
-		} else if("toTeacherView".equals(method)){ 
-			request.getRequestDispatcher("/WEB-INF/view/teacher/teacher.jsp").forward(request, response);
-		} else if("toAdminPersonalView".equals(method)){ 
-			request.getRequestDispatcher("/WEB-INF/view/admin/adminPersonal.jsp").forward(request, response);
-		}
-		return SUCCESS;
+	public String toAdminView(){
+		return "toAdminView";
 	}
 	
+	public String toStudentView(){
+		return "toStudentView";
+	}
+	
+	public String toTeacherView(){
+		return "toTeacherView";
+	}
+	
+	public String toAdminPersonalView(){
+		return "adminPersonal";
+	}
 	
 	public String getAllAccount(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
@@ -42,13 +41,13 @@ public class SystemAction extends ActionSupport{
 		
 		if("AllAccount".equalsIgnoreCase(method)){ 
 			allAccount(request, response);
-		} else if("EditSystemInfo".equals(method)){ 
-			editSystemInfo(request, response);
-		}
+		} 
 		return null;
 	}
 	
-	private void editSystemInfo(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public void editSystemInfo() throws IOException {
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpServletResponse response = ServletActionContext.getResponse();
 		String name = request.getParameter("name");
 		String value = request.getParameter("value");
 		
@@ -82,11 +81,9 @@ public class SystemAction extends ActionSupport{
 		
         response.getWriter().write(result);
 	}
-	public String check() throws ServletException, IOException{
-		HttpServletRequest request = ServletActionContext.getRequest();
-		HttpServletResponse response = ServletActionContext.getResponse();
-		check(request, response);
-		return null;
-	}
+
+	
+	
+	
 	
 }

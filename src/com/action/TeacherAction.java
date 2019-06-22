@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts2.ServletActionContext;
+import org.apache.struts2.interceptor.ServletRequestAware;
+import org.apache.struts2.interceptor.ServletResponseAware;
 
 import com.bean.Teacher;
 import com.bean.User;
@@ -21,11 +23,18 @@ import com.service.TeacherService;
 import com.tools.StringTool;
 import com.opensymphony.xwork2.ActionSupport;
 
-public class TeacherAction extends ActionSupport{
+public class TeacherAction extends ActionSupport implements ServletRequestAware,ServletResponseAware{
+
 	private TeacherService service = new TeacherService();
+	HttpServletRequest request;
+	HttpServletResponse response;
+	private Teacher teach;
+	
+
+	private String course;
 	
 	public String toPersonal(){
-		HttpServletRequest request = ServletActionContext.getRequest();
+		
 		User user = (User) request.getSession().getAttribute("user");
 		Teacher teacher = service.getTeacher(user.getAccount());
 		request.getSession().setAttribute("userDetail", teacher);
@@ -34,35 +43,20 @@ public class TeacherAction extends ActionSupport{
 	
 	public String toTeacherNoteListView(){
 		return "toTeacherNoteListView";
-		
 	}
 	public String toExamTeacherView() {
+		
 		return "toExamTeacherView";
 	}
 	public String toTeacherListView(){
 		return "toTeacherListView";
 	}
 	public void editTeacherPersonal() throws Exception {
-		HttpServletRequest request = ServletActionContext.getRequest();
-		HttpServletResponse response = ServletActionContext.getResponse();
-		
-		Enumeration<String> pNames = request.getParameterNames();
-		Teacher teacher = new Teacher();
-		while(pNames.hasMoreElements()){
-			String pName = pNames.nextElement();
-			String value = request.getParameter(pName);
-			try {
-				BeanUtils.setProperty(teacher, pName, value);
-			} catch (IllegalAccessException | InvocationTargetException e) {
-				e.printStackTrace();
-			}
-		}
-		service.editTeacherPersonal(teacher);
+		service.editTeacherPersonal(teach);
 		response.getWriter().write("success");
 	}
 	public void teacherList() throws IOException {
-		HttpServletRequest request = ServletActionContext.getRequest();
-		HttpServletResponse response = ServletActionContext.getResponse();
+		
 		//获取分页参数
 		int page = Integer.parseInt(request.getParameter("page"));
 		int rows = Integer.parseInt(request.getParameter("rows"));
@@ -74,8 +68,7 @@ public class TeacherAction extends ActionSupport{
 	}
 	
 	public void deleteTeacher() throws IOException {
-		HttpServletRequest request = ServletActionContext.getRequest();
-		HttpServletResponse response = ServletActionContext.getResponse();
+		
 		
 		String[] ids = request.getParameterValues("ids[]");
 		String[] numbers = request.getParameterValues("numbers[]");
@@ -89,28 +82,13 @@ public class TeacherAction extends ActionSupport{
 	}
 	
 	public void addTeacher() throws IOException {
-		HttpServletRequest request = ServletActionContext.getRequest();
-		HttpServletResponse response = ServletActionContext.getResponse();
-		//获取参数名
-		Enumeration<String> pNames = request.getParameterNames();
-		Teacher teacher = new Teacher();
-		while(pNames.hasMoreElements()){
-			String pName = pNames.nextElement();
-			String value = request.getParameter(pName);
-			System.out.println(pName);
-			System.out.println(value);
-			try {
-				if("course[]".equals(pName)){//设置所选课程
-					BeanUtils.setProperty(teacher, "course", request.getParameterValues("course[]"));
-				} else{
-					BeanUtils.setProperty(teacher, pName, value);
-				}
-			} catch (IllegalAccessException | InvocationTargetException e) {
-				e.printStackTrace();
-			}
+	
+		if(course!=null&&!course.equals("")) {
+			String [] courses  = course.split(",");
+			teach.setCourse(courses);
 		}
 		try {
-			service.addTeacher(teacher);
+			service.addTeacher(teach);
 			response.getWriter().write("success");
 		} catch (Exception e) {
 			response.getWriter().write("fail");
@@ -119,26 +97,12 @@ public class TeacherAction extends ActionSupport{
 	}
 	
 	public void editTeacher() throws IOException {
-		HttpServletRequest request = ServletActionContext.getRequest();
-		HttpServletResponse response = ServletActionContext.getResponse();
-		//获取参数名
-		Enumeration<String> pNames = request.getParameterNames();
-		Teacher teacher = new Teacher();
-		while(pNames.hasMoreElements()){
-			String pName = pNames.nextElement();
-			String value = request.getParameter(pName);
-			try {
-				if("course[]".equals(pName)){
-					BeanUtils.setProperty(teacher, "course", request.getParameterValues("course[]"));
-				} else{
-					BeanUtils.setProperty(teacher, pName, value);
-				}
-			} catch (IllegalAccessException | InvocationTargetException e) {
-				e.printStackTrace();
-			}
+		if(course!=null&&!course.equals("")) {
+			String [] courses  = course.split(",");
+			teach.setCourse(courses);
 		}
 		try {
-			service.editTeacher(teacher);
+			service.editTeacher(teach);
 			response.getWriter().write("success");
 		} catch (Exception e) {
 			response.getWriter().write("fail");
@@ -146,8 +110,7 @@ public class TeacherAction extends ActionSupport{
 		}
 	}
 	public void getTeacher() throws IOException {
-		HttpServletRequest request = ServletActionContext.getRequest();
-		HttpServletResponse response = ServletActionContext.getResponse();
+		
 		
 		User user = (User) request.getSession().getAttribute("user");
 		String number = user.getAccount();
@@ -158,8 +121,7 @@ public class TeacherAction extends ActionSupport{
 	
 	
 	public void getExamClazz() throws IOException {
-		HttpServletRequest request = ServletActionContext.getRequest();
-		HttpServletResponse response = ServletActionContext.getResponse();
+		
 		int gradeid = Integer.parseInt(request.getParameter("gradeid"));
 		Grade grade = new Grade();
 		grade.setId(gradeid);
@@ -172,8 +134,7 @@ public class TeacherAction extends ActionSupport{
 	}
 	
 	public void getExamCourse() throws IOException {
-		HttpServletRequest request = ServletActionContext.getRequest();
-		HttpServletResponse response = ServletActionContext.getResponse();
+		
 		int gradeid = Integer.parseInt(request.getParameter("gradeid"));
 		Grade grade = new Grade();
 		grade.setId(gradeid);
@@ -191,6 +152,34 @@ public class TeacherAction extends ActionSupport{
 		String result = service.getExamClazz(user.getAccount(), grade, clazz);
 		response.setContentType("text/html;charset=UTF-8"); 
 		response.getWriter().write(result);
+	}
+
+	@Override
+	public void setServletResponse(HttpServletResponse arg0) {
+		// TODO Auto-generated method stub
+		this.response =  arg0;
+	}
+
+	@Override
+	public void setServletRequest(HttpServletRequest arg0) {
+		// TODO Auto-generated method stub
+		this.request =  arg0;
+	}
+	
+	public Teacher getTeach() {
+		return teach;
+	}
+
+	public void setTeach(Teacher teach) {
+		this.teach = teach;
+	}
+
+	public String getCourse() {
+		return course;
+	}
+
+	public void setCourse(String course) {
+		this.course = course;
 	}
 	
 }

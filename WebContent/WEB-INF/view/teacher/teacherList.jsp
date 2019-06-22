@@ -22,7 +22,7 @@
 	        collapsible:false,//是否可折叠的 
 	        fit: true,//自动大小 
 	        method: "post",
-	        url:"TeacherAction-teacherList?t="+new Date().getTime(),
+	        url:"TeacherAction-teacherList",
 	        idField:'id', 
 	        singleSelect:false,//是否单选 
 	        pagination:true,//分页控件 
@@ -159,17 +159,10 @@
 								var course = gradeid+"_"+clazzid+"_"+courseid;
 								chooseCourse.push(course);
 							});
-							var number = $("#add_number").textbox("getText");
-							var name = $("#add_name").textbox("getText");
-							var sex = $("#add_sex").textbox("getText");
-							var phone = $("#add_phone").textbox("getText");
-							var qq = $("#add_qq").textbox("getText");
-							var data = {number:number, name:name,sex:sex,phone:phone,qq:qq,course:chooseCourse};
-							
 							$.ajax({
 								type: "post",
 								url: "TeacherAction-addTeacher",
-								data: data,
+								data: $("#addForm").serialize()+"&course="+chooseCourse,
 								success: function(msg){
 									if(msg == "success"){
 										$.messager.alert("消息提醒","添加成功!","info");
@@ -385,17 +378,10 @@
 								chooseCourse.push(course);
 							});
 							var id = $("#dataList").datagrid("getSelected").id;
-							var number = $("#edit_number").textbox("getText");
-							var name = $("#edit_name").textbox("getText");
-							var sex = $("#edit_sex").textbox("getText");
-							var phone = $("#edit_phone").textbox("getText");
-							var qq = $("#edit_qq").textbox("getText");
-							var data = {id:id, number:number, name:name,sex:sex,phone:phone,qq:qq,course:chooseCourse};
-							
 							$.ajax({
 								type: "post",
 								url: "TeacherAction-editTeacher",
-								data: data,
+								data: $("#editForm").serialize()+"&course="+chooseCourse+"&teach.id="+id,
 								success: function(msg){
 									if(msg == "success"){
 										$.messager.alert("消息提醒","修改成功!","info");
@@ -444,8 +430,7 @@
 				$("#edit_sex").textbox('setValue', selectRow.sex);
 				$("#edit_phone").textbox('setValue', selectRow.phone);
 				$("#edit_qq").textbox('setValue', selectRow.qq);
-				$("#edit_photo").attr("src", "PhotoAction-getPhoto?type=3&number="+selectRow.number);
-				
+				console.info(selectRow.courseList[0]);
 				var courseList = selectRow.courseList;
 				
 				for(var i = 0;i < courseList.length;i++){
@@ -519,33 +504,30 @@
 	
 	<!-- 添加窗口 -->
 	<div id="addDialog" style="padding: 10px;">  
-   		<div style=" position: absolute; margin-left: 560px; width: 250px; height: 300px; border: 1px solid #EEF4FF" id="photo">
-    		<img alt="照片" style="max-width: 250px; max-height: 300px;" title="照片" src="photo/teacher.jpg" />
-	    </div> 
    		<form id="addForm" method="post">
 	    	<table id="addTable" border=0 style="width:800px; table-layout:fixed;" cellpadding="6" >
 	    		<tr>
-	    			<td style="width:40px">学号:</td>
+	    			<td style="width:40px">工号:</td>
 	    			<td colspan="3">
-	    				<input id="add_number"  class="easyui-textbox" style="width: 200px; height: 30px;" type="text" name="number" data-options="required:true, validType:'repeat', missingMessage:'请输入工号'" />
+	    				<input id="add_number"  class="easyui-textbox" style="width: 200px; height: 30px;" type="text" name="teach.number" data-options="required:true, validType:'repeat', missingMessage:'请输入工号'" />
 	    			</td>
 	    			<td style="width:80px"></td>
 	    		</tr>
 	    		<tr>
 	    			<td>姓名:</td>
-	    			<td colspan="4"><input id="add_name" style="width: 200px; height: 30px;" class="easyui-textbox" type="text" name="name" data-options="required:true, missingMessage:'请填写姓名'" /></td>
+	    			<td colspan="4"><input id="add_name" style="width: 200px; height: 30px;" class="easyui-textbox" type="text" name="teach.name" data-options="required:true, missingMessage:'请填写姓名'" /></td>
 	    		</tr>
 	    		<tr>
 	    			<td>性别:</td>
-	    			<td colspan="4"><select id="add_sex" class="easyui-combobox" data-options="editable: false, panelHeight: 50, width: 60, height: 30" name="sex"><option value="男">男</option><option value="女">女</option></select></td>
+	    			<td colspan="4"><select id="add_sex" class="easyui-combobox" data-options="editable: false, panelHeight: 50, width: 60, height: 30" name="teach.sex"><option value="男">男</option><option value="女">女</option></select></td>
 	    		</tr>
 	    		<tr>
 	    			<td>电话:</td>
-	    			<td colspan="4"><input id="add_phone" style="width: 200px; height: 30px;" class="easyui-textbox" type="text" name="phone" validType="mobile" /></td>
+	    			<td colspan="4"><input id="add_phone" style="width: 200px; height: 30px;" class="easyui-textbox" type="text" name="teach.phone" validType="mobile" /></td>
 	    		</tr>
 	    		<tr>
 	    			<td>QQ:</td>
-	    			<td colspan="4"><input id="add_qq" style="width: 200px; height: 30px;" class="easyui-textbox" type="text" name="qq" validType="number" /></td>
+	    			<td colspan="4"><input id="add_qq" style="width: 200px; height: 30px;" class="easyui-textbox" type="text" name="teach.qq" validType="number" /></td>
 	    		</tr>
 	    	</table>
 	    </form>
@@ -571,31 +553,28 @@
 	
 	<!-- 修改窗口 -->
 	<div id="editDialog" style="padding: 10px">
-		<div style=" position: absolute; margin-left: 560px; width: 250px; height: 300px; border: 1px solid #EEF4FF">
-	    	<img id="edit_photo" alt="照片" style="max-width: 200px; max-height: 400px;" title="照片" src="" />
-	    </div>   
     	<form id="editForm" method="post">
 	    	<table id="editTable" border=0 style="width:800px; table-layout:fixed;" cellpadding="6" >
 	    		<tr>
 	    			<td style="width:40px">工号:</td>
-	    			<td colspan="3"><input id="edit_number" data-options="readonly: true" class="easyui-textbox" style="width: 200px; height: 30px;" type="text" name="number" data-options="required:true, validType:'repeat', missingMessage:'请输入工号'" /></td>
+	    			<td colspan="3"><input id="edit_number" data-options="readonly: true" class="easyui-textbox" style="width: 200px; height: 30px;" type="text" name="teach.number" data-options="required:true, validType:'repeat', missingMessage:'请输入工号'" /></td>
 	    			<td style="width:80px"></td>
 	    		</tr>
 	    		<tr>
 	    			<td>姓名:</td>
-	    			<td><input id="edit_name" style="width: 200px; height: 30px;" class="easyui-textbox" type="text" name="name" data-options="required:true, missingMessage:'请填写姓名'" /></td>
+	    			<td><input id="edit_name" style="width: 200px; height: 30px;" class="easyui-textbox" type="text" name="teach.name" data-options="required:true, missingMessage:'请填写姓名'" /></td>
 	    		</tr>
 	    		<tr>
 	    			<td>性别:</td>
-	    			<td><select id="edit_sex" class="easyui-combobox" data-options="editable: false, panelHeight: 50, width: 60, height: 30" name="sex"><option value="男">男</option><option value="女">女</option></select></td>
+	    			<td><select id="edit_sex" class="easyui-combobox" data-options="editable: false, panelHeight: 50, width: 60, height: 30" name="teach.sex"><option value="男">男</option><option value="女">女</option></select></td>
 	    		</tr>
 	    		<tr>
 	    			<td>电话:</td>
-	    			<td><input id="edit_phone" style="width: 200px; height: 30px;" class="easyui-textbox" type="text" name="phone" validType="mobile" /></td>
+	    			<td><input id="edit_phone" style="width: 200px; height: 30px;" class="easyui-textbox" type="text" name="teach.phone" validType="mobile" /></td>
 	    		</tr>
 	    		<tr>
 	    			<td>QQ:</td>
-	    			<td colspan="4"><input id="edit_qq" style="width: 200px; height: 30px;" class="easyui-textbox" type="text" name="qq" validType="number" /></td>
+	    			<td colspan="4"><input id="edit_qq" style="width: 200px; height: 30px;" class="easyui-textbox" type="text" name="teach.qq" validType="number" /></td>
 	    		</tr>
 	    	</table>
 	    </form>

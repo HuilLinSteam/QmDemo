@@ -51,13 +51,13 @@
 	  						} else{
 	  							$.ajax({
 	  								type: "post",
-	  								url: "SystemServlet?method=EditPasswod&t="+new Date().getTime(),
+	  								url: "SystemAction-editPasswod?t="+new Date().getTime(),
 	  								data: $("#editPassword").serialize(),
 	  								success: function(msg){
 	  									if(msg == "success"){
 	  										$.messager.alert("消息提醒","修改成功，将重新登录","info")
 	  										setTimeout(function(){
-	  											top.location.href = "SystemServlet?method=LoginOut";
+	  											top.location.href = "SystemAction-loginOut";
 	  										}, 1000);
 	  									}
 	  								}
@@ -140,7 +140,7 @@
 				var data = {'name': name, 'value': value};
 				$.ajax({
 					type: "post",
-					url: "SystemServlet?method=EditSystemInfo&t="+new Date().getTime(),
+					url: "SystemAction-editSystemInfo?t="+new Date().getTime(),
 					data: data,
 					success: function(msg){
 						if(msg == "success"){

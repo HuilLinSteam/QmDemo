@@ -14,9 +14,10 @@
 		<action name="getVCode" class="com.action.LoginAction" method="getVCode">
 		
 		</action>
-		<!-- 对应地址 -->
-		<action name="check" class="com.action.SystemAction" method="check"></action>
+		
+		
 		
 	</package>
 	<include file="struts_zcr.xml"></include>
+	<include file="struts_lqx.xml"></include>
 </struts>
