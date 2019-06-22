@@ -4,7 +4,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>班级列表</title>
-	<link rel="stylesheet" type="text/css" href="easyui/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="easyui/themes/bootstrap/easyui.css">
 	<link rel="stylesheet" type="text/css" href="easyui/themes/icon.css">
 	<link rel="stylesheet" type="text/css" href="easyui/css/demo.css">
 	<script type="text/javascript" src="easyui/jquery.min.js"></script>
@@ -20,7 +20,7 @@
 	        collapsible: false,//是否可折叠的 
 	        fit: true,//自动大小 
 	        method: "post",
-	        url:"ClazzServlet?method=ClazzDetailList&t="+new Date().getTime(),
+	        url:"clazzDetailList",
 	        idField:'id', 
 	        singleSelect: true,//是否单选 
 	        pagination: true,//分页控件 
@@ -68,7 +68,7 @@
             		if(r){
             			$.ajax({
 							type: "post",
-							url: "ClazzServlet?method=DeleteClazz",
+							url: "deleteClazz",
 							data: {clazzid: clazzid},
 							success: function(msg){
 								if(msg == "success"){
@@ -95,7 +95,7 @@
 	  		multiple: false, //可多选
 	  		editable: false, //不可编辑
 	  		method: "post",
-	  		url: "GradeServlet?method=GradeList&t="+new Date().getTime(),
+	  		url: "gradeList",
 	  		onChange: function(newValue, oldValue){
 	  			$('#dataList').datagrid("options").queryParams = {gradeid: newValue};
 	  			$('#dataList').datagrid("reload");
@@ -109,7 +109,7 @@
 	  		multiple: false, //可多选
 	  		editable: false, //不可编辑
 	  		method: "post",
-	  		url: "GradeServlet?method=GradeList&t="+new Date().getTime(),
+	  		url: "gradeList",
 	  		onLoadSuccess: function(){
 		  		//默认选择第一条数据
 				var data = $(this).combobox("getData");
@@ -143,7 +143,7 @@
 							var gradeid = $("#add_gradeList").combobox("getValue");
 							$.ajax({
 								type: "post",
-								url: "ClazzServlet?method=AddClazz",
+								url: "addClazz",
 								data: $("#addForm").serialize(),
 								success: function(msg){
 									if(msg == "success"){

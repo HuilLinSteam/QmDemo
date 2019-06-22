@@ -4,7 +4,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>教师列表</title>
-	<link rel="stylesheet" type="text/css" href="easyui/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="easyui/themes/bootstrap/easyui.css">
 	<link rel="stylesheet" type="text/css" href="easyui/themes/icon.css">
 	<link rel="stylesheet" type="text/css" href="easyui/css/demo.css">
 	<script type="text/javascript" src="easyui/jquery.min.js"></script>
@@ -20,8 +20,8 @@
 	        collapsible: false,//是否可折叠的 
 	        fit: true,//自动大小 
 	        method: "post",
-	        url:"GradeServlet?method=GradeList&course=course&t="+new Date().getTime(),
-	        idField:'id', 
+	        url:"gradeList?course=course",
+	        idField:'gid', 
 	        singleSelect: true,//是否单选 
 	        pagination: false,//分页控件 
 	        rownumbers: true,//行号 
@@ -65,7 +65,7 @@
             		if(r){
             			$.ajax({
 							type: "post",
-							url: "GradeServlet?method=DeleteGrade",
+							url: "deleteGrade",
 							data: {gradeid: gradeid},
 							success: function(msg){
 								if(msg == "success"){
@@ -90,7 +90,7 @@
 	  		multiple: true, //可多选
 	  		editable: false, //不可编辑
 	  		method: "post",
-	  		url: "CourseServlet?method=CourseList&t="+new Date().getTime(),
+	  		url: "courseList",
 	  	});
 	    
 	  	//设置添加学生窗口
@@ -118,7 +118,7 @@
 						} else{
 							$.ajax({
 								type: "post",
-								url: "GradeServlet?method=AddGrade",
+								url: "addGrade",
 								data: $("#addForm").serialize(),
 								success: function(msg){
 									if(msg == "success"){

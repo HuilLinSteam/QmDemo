@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+    "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+	<package name="loginJSP" namespace="/" extends="struts-default">
+		<!-- ajax请求 -->
+		<action name="login" class="com.action.LoginAction" method="login">
+		
+		</action>
+		<!-- 验证码 -->
+		<action name="getVCode" class="com.action.LoginAction" method="getVCode">
+		
+		</action>
+		<!-- 对应地址 -->
+		<action name="check" class="com.action.SystemAction" method="check"></action>
+		
+		<!-- 课程列表 -->
+		<action name="toCourseListView" class="com.action.CourseAction" method="toCourseListView">
+		    <result>/WEB-INF/view/other/courseList.jsp</result>
+		</action>		
+		<action name="courseList" class="com.action.CourseAction" method="courseList"></action>
+		<action name="deleteCourse" class="com.action.CourseAction" method="deleteCourse"></action>
+		<action name="addCourse" class="com.action.CourseAction" method="addCourse"></action>
+		
+		<!-- 班级列表 -->
+		<action name="toClazzListView" class="com.action.ClazzAction" method="toClazzListView">
+		    <result>/WEB-INF/view/other/clazzList.jsp</result>
+		</action>
+		<action name="deleteClazz" class="com.action.ClazzAction" method="deleteClazz"></action>
+		<action name="addClazz" class="com.action.ClazzAction" method="addClazz"></action>
+		<action name="clazzDetailList" class="com.action.ClazzAction" method="clazzDetailList"></action>
+		<action name="clazzList" class="com.action.ClazzAction" method="clazzList"></action>
+		
+		<!-- 年级列表 -->
+		<action name="toGradeListView" class="com.action.GradeAction" method="toGradeListView">
+		    <result>/WEB-INF/view/other/gradeList.jsp</result>
+		</action>
+		<action name="deleteGrade" class="com.action.GradeAction" method="deleteGrade"></action>
+		<action name="addGrade" class="com.action.GradeAction" method="addGrade"></action>
+		<action name="gradeList" class="com.action.GradeAction" method="gradeList"></action>
+		
+	</package>
+</struts>

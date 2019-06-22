@@ -27,4 +27,30 @@ public class GradeAction extends ActionSupport{
         response.getWriter().write(result);
 	}
 	
+	public String toGradeListView(){
+		return SUCCESS;
+	}
+	//删除年级
+	public void deleteGrade() throws IOException {
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpServletResponse response = ServletActionContext.getResponse();	
+		int gradeid = Integer.parseInt(request.getParameter("gradeid"));
+		try {
+			service.deleteGrade(gradeid);
+			response.getWriter().write("success");
+		} catch (Exception e) {
+			response.getWriter().write("fail");
+			e.printStackTrace();
+		}		
+	}
+	//添加年级
+	public void addGrade() throws IOException {
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpServletResponse response = ServletActionContext.getResponse();
+		String[] clazzids = request.getParameterValues("clazzid");
+		String name = request.getParameter("name");
+		
+		service.addGrade(name, clazzids);
+        response.getWriter().write("success");	
+	}
 }

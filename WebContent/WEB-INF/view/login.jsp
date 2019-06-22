@@ -15,7 +15,7 @@
 <link href="h-ui/lib/icheck/icheck.css" rel="stylesheet" type="text/css" />
 <link href="h-ui/lib/Hui-iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
 
-<link rel="stylesheet" type="text/css" href="easyui/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="easyui/themes/bootstrap/easyui.css">
 <link rel="stylesheet" type="text/css" href="easyui/themes/icon.css">
 
 <script type="text/javascript" src="easyui/jquery.min.js"></script> 
@@ -77,7 +77,7 @@
     </form>
   </div>
 </div>
-<div class="footer">Copyright &nbsp; SWU @ Lizhou </div>
+<div class="footer">Copyright &nbsp; 广州松田 </div>
 
 <script type="text/javascript">
 	$(function(){
@@ -115,7 +115,7 @@
 				data: data, 
 				dataType: "text", //返回数据类型
 				success: function(msg){
-					alert(msg);
+// 					alert(msg);
 					if("vcodeError" == msg){
 						$.messager.alert("消息提醒", "验证码错误!", "warning");
 						$("#vcodeImg").click();//切换验证码

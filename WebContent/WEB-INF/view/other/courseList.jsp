@@ -4,7 +4,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>课程列表</title>
-	<link rel="stylesheet" type="text/css" href="easyui/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="easyui/themes/bootstrap/easyui.css">
 	<link rel="stylesheet" type="text/css" href="easyui/themes/icon.css">
 	<link rel="stylesheet" type="text/css" href="easyui/css/demo.css">
 	<script type="text/javascript" src="easyui/jquery.min.js"></script>
@@ -20,7 +20,7 @@
 	        collapsible: false,//是否可折叠的 
 	        fit: true,//自动大小 
 	        method: "post",
-	        url:"CourseServlet?method=CourseList&t="+new Date().getTime(),
+	        url:"courseList",
 	        idField:'id', 
 	        singleSelect: true,//是否单选 
 	        pagination: false,//分页控件 
@@ -42,16 +42,16 @@
 	    });
 	    //删除
 	    $("#delete").click(function(){
-	    	var selectRow = $("#dataList").datagrid("getSelected");
+	    	var selectRow = $("#dataList").datagrid("getSelected");  //获取选中数据
         	if(selectRow == null){
             	$.messager.alert("消息提醒", "请选择数据进行删除!", "warning");
             } else{
-            	var courseid = selectRow.id;
+            	var courseid = selectRow.id;  //将获取选中数据
             	$.messager.confirm("消息提醒", "将删除与课程相关的所有数据，确认继续？", function(r){
             		if(r){
             			$.ajax({
 							type: "post",
-							url: "CourseServlet?method=DeleteCourse",
+							url: "deleteCourse",
 							data: {courseid: courseid},
 							success: function(msg){
 								if(msg == "success"){
@@ -87,14 +87,14 @@
 					plain: true,
 					iconCls:'icon-book-add',
 					handler:function(){
-						var validate = $("#addForm").form("validate");
+						var validate = $("#addForm").form("validate"); //获取输入数据
 						if(!validate){
 							$.messager.alert("消息提醒","请检查你输入的数据!","warning");
 							return;
 						} else{
 							$.ajax({
 								type: "post",
-								url: "CourseServlet?method=AddCourse",
+								url: "addCourse",  //请求添加
 								data: $("#addForm").serialize(),
 								success: function(msg){
 									if(msg == "success"){
@@ -103,7 +103,7 @@
 										$("#addDialog").dialog("close");
 										//清空原表格数据
 										$("#add_name").textbox('setValue', "");
-										//刷新
+										//刷新数据列表
 										$('#dataList').datagrid("reload");
 									} else{
 										$.messager.alert("消息提醒","添加失败!","warning");

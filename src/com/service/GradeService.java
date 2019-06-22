@@ -23,7 +23,7 @@ import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
 
 /**
- * 年级服务层
+ * 骞寸骇鏈嶅姟灞�
  * @author bojiangzhou
  *
  */
@@ -32,19 +32,19 @@ public class GradeService {
 	BaseDaoInter dao = new BaseDaoImpl();
 	
 	/**
-	 * 获取所有年级
-	 * @param clazz 是否获取年级下课程
-	 * @return JSON格式的年级
+	 * 鑾峰彇鎵�鏈夊勾绾�
+	 * @param clazz 鏄惁鑾峰彇骞寸骇涓嬭绋�
+	 * @return JSON鏍煎紡鐨勫勾绾�
 	 */
 	@Test
 	public String getGradeList(String course){
-		//获取数据
+		//鑾峰彇鏁版嵁
 		List<Object> list = dao.getList(Grade.class, "SELECT * FROM grade");
 		JsonConfig config = new JsonConfig();
-		if(StringTool.isEmpty(course)){ //如果没有传进course参数，则返回年级的id和名称即可
+		if(StringTool.isEmpty(course)){ //濡傛灉娌℃湁浼犺繘course鍙傛暟锛屽垯杩斿洖骞寸骇鐨刬d鍜屽悕绉板嵆鍙�
 			config.setExcludes(new String[]{"clazzList", "clazzList", "studentList"});
-		} else{ //不为空需要再将年级下的班级获取出来
-			//获取课程
+		} else{ //涓嶄负绌洪渶瑕佸啀灏嗗勾绾т笅鐨勭彮绾ц幏鍙栧嚭鏉�
+			//鑾峰彇璇剧▼
 			for(Object obj : list){
 				Grade grade = (Grade) obj;
 				List<Object> gradeCourse = dao.getList(Course.class, 
@@ -61,23 +61,23 @@ public class GradeService {
 			config.setExcludes(new String[]{"clazzList", "studentList"});
 		}
 		
-		//json化
+		//json鍖�
         String result = JSONArray.fromObject(list, config).toString();
         
         return result;
 	}
 
 	/**
-	 * 添加年级信息
-	 * @param name 年级名称
-	 * @param clazzids 年级所选课程
+	 * 娣诲姞骞寸骇淇℃伅
+	 * @param name 骞寸骇鍚嶇О
+	 * @param clazzids 骞寸骇鎵�閫夎绋�
 	 */
 	public void addGrade(String name, String[] clazzids) {
-		//先添加年级
+		//鍏堟坊鍔犲勾绾�
 		int key = dao.insertReturnKeys("INSERT INTO grade(name) value(?)", new Object[]{name});
 		
 		String sql = "INSERT INTO grade_course(gradeid, courseid) value(?, ?)";
-		//批量设置课程
+		//鎵归噺璁剧疆璇剧▼
 		Object[][] params = new Object[clazzids.length][2];
 		for(int i = 0;i < clazzids.length;i++){
 			params[i][0] = key;
@@ -87,26 +87,26 @@ public class GradeService {
 	}
 
 	/**
-	 * 删除年级
+	 * 鍒犻櫎骞寸骇
 	 * @param gradeid
 	 * @throws Exception 
 	 */
 	public void deleteGrade(int gradeid) throws Exception {
-		//获取连接
+		//鑾峰彇杩炴帴
 		Connection conn = MysqlTool.getConnection();
 		try {
-			//开启事务
+			//寮�鍚簨鍔�
 			MysqlTool.startTransaction();
-			
-			//删除成绩表
+			System.out.println(gradeid);
+			//鍒犻櫎鎴愮哗琛�
 			dao.deleteTransaction(conn, "DELETE FROM escore WHERE gradeid=?", new Object[]{gradeid});
-			//删除考试记录
+			//鍒犻櫎鑰冭瘯璁板綍
 			dao.deleteTransaction(conn, "DELETE FROM exam WHERE gradeid=?", new Object[]{gradeid});
-			//删除班级的课程和老师的关联
+			//鍒犻櫎鐝骇鐨勮绋嬪拰鑰佸笀鐨勫叧鑱�
 			dao.deleteTransaction(conn, "DELETE FROM clazz_course_teacher WHERE gradeid=?", new Object[]{gradeid});
-			//删除班级的课程和老师的关联
+			//鍒犻櫎鐝骇鐨勮绋嬪拰鑰佸笀鐨勫叧鑱�
 			dao.deleteTransaction(conn, "DELETE FROM grade_course WHERE gradeid=?", new Object[]{gradeid});
-			//删除用户
+			//鍒犻櫎鐢ㄦ埛
 			List<Object> list = dao.getList(Student.class, "SELECT number FROM student WHERE gradeid=?",  new Object[]{gradeid});
 			if(list.size() > 0){
 				Object[] param = new Object[list.size()];
@@ -116,18 +116,18 @@ public class GradeService {
 				}
 				String sql = "DELETE FROM user WHERE account IN ("+StringTool.getMark(list.size())+")";
 				dao.deleteTransaction(conn, sql, param);
-				//删除学生
+				//鍒犻櫎瀛︾敓
 				dao.deleteTransaction(conn, "DELETE FROM student WHERE gradeid=?", new Object[]{gradeid});
 			}
-			//删除班级
+			//鍒犻櫎鐝骇
 			dao.deleteTransaction(conn, "DELETE FROM clazz WHERE gradeid=?",  new Object[]{gradeid});
-			//最后删除年级
+			//鏈�鍚庡垹闄ゅ勾绾�
 			dao.deleteTransaction(conn, "DELETE FROM grade WHERE id=?",  new Object[]{gradeid});
 			
-			//提交事务
+			//鎻愪氦浜嬪姟
 			MysqlTool.commit();
 		} catch (Exception e) {
-			//回滚事务
+			//鍥炴粴浜嬪姟
 			MysqlTool.rollback();
 			e.printStackTrace();
 			throw e;

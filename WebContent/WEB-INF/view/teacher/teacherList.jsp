@@ -4,7 +4,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>教师列表</title>
-	<link rel="stylesheet" type="text/css" href="easyui/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="easyui/themes/bootstrap/easyui.css">
 	<link rel="stylesheet" type="text/css" href="easyui/themes/icon.css">
 	<link rel="stylesheet" type="text/css" href="easyui/css/demo.css">
 	<script type="text/javascript" src="easyui/jquery.min.js"></script>

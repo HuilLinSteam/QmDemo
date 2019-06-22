@@ -4,6 +4,14 @@
     "http://struts.apache.org/dtds/struts-2.3.dtd">
 <struts>
 	<package name="LQX" namespace="/" extends="struts-default">
+		<!-- ajax请求 -->
+		<action name="login" class="com.action.LoginAction" method="login">
+		
+		</action>
+		<!-- 验证码 -->
+		<action name="getVCode" class="com.action.LoginAction" method="getVCode">
+		
+		</action>
 		<action name="*-*" class="com.action.{1}" method="{2}">
 			<result name="adminPersonal">/WEB-INF/view/admin/adminPersonal.jsp</result>
 			<result name="loginOut">/index.jsp</result>
@@ -18,5 +26,4 @@
 		</action>
 		
 	</package>
-	<include file="struts_zcr.xml"></include>
 </struts>

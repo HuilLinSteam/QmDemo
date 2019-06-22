@@ -9,7 +9,7 @@
     <link rel="shortcut icon" href="favicon.ico"/>
 	<link rel="bookmark" href="favicon.ico"/>
     <link rel="stylesheet" type="text/css" href="easyui/css/default.css" />
-    <link rel="stylesheet" type="text/css" href="easyui/themes/default/easyui.css" />
+    <link rel="stylesheet" type="text/css" href="easyui/themes/bootstrap/easyui.css" />
     <link rel="stylesheet" type="text/css" href="easyui/themes/icon.css" />
     <script type="text/javascript" src="easyui/jquery.min.js"></script>
     <script type="text/javascript" src="easyui/jquery.easyui.min.js"></script>
@@ -33,9 +33,9 @@
 						},
 						{"menuid":"4","icon":"","menuname":"基础信息管理",
 							"menus":[
-									{"menuid":"41","menuname":"年级列表","icon":"icon-world","url":"GradeServlet?method=toGradeListView"},
-									{"menuid":"42","menuname":"班级列表","icon":"icon-house","url":"ClazzServlet?method=toClazzListView"},
-									{"menuid":"43","menuname":"课程列表","icon":"icon-book-open","url":"CourseServlet?method=toCourseListView"}
+									{"menuid":"41","menuname":"年级列表","icon":"icon-world","url":"toGradeListView"},
+									{"menuid":"42","menuname":"班级列表","icon":"icon-house","url":"toClazzListView"},
+									{"menuid":"43","menuname":"课程列表","icon":"icon-book-open","url":"toCourseListView"}
 								]
 						},
 						{"menuid":"5","icon":"","menuname":"系统管理",
@@ -56,14 +56,14 @@
 		</div>
 	</noscript>
     <div region="north" split="true" border="false" style="overflow: hidden; height: 30px;
-        background: url(images/layout-browser-hd-bg.gif) #7f99be repeat-x center 50%;
+        background: url(images/layout-browser-hd-bg.gif) rgb(138,144,153) repeat-x center 50%;
 
         line-height: 20px;color: #fff; font-family: Verdana, 微软雅黑,黑体">
         <span style="float:right; padding-right:20px;" class="head"><span style="color:red; font-weight:bold;">${user.name}&nbsp;</span>您好&nbsp;&nbsp;&nbsp;<a href="SystemAction-loginOut" id="loginOut">安全退出</a></span>
 
-        <span style="padding-left:10px; font-size: 16px; ">SWU学生信息管理系统</span>
+        <span style="padding-left:10px; font-size: 16px; ">成绩管理系统</span>
     </div>
-    <div region="south" split="true" style="height: 30px; background: #D2E0F2; ">
+    <div region="south" split="true" style="height: 30px; background: rgb(138,144,153); ">
         <div class="footer">Copyright &copy;2019</div>
     </div>
     <div region="west" hide="true" split="true" title="导航菜单" style="width:180px;" id="west">

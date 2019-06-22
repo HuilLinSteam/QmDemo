@@ -22,7 +22,7 @@ import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
 
 /**
- * å¹´çº§æœåŠ¡å±‚
+ * Äê¼¶·şÎñ²ã
  * @author bojiangzhou
  *
  */
@@ -31,15 +31,15 @@ public class ClazzService {
 	ClazzDaoInter dao = new ClazzDaoImpl();
 	
 	/**
-	 * è·å–æŒ‡å®šå¹´çº§ä¸‹çš„ç­çº§
-	 * @param gid å¹´çº§ID
-	 * @return JSONæ ¼å¼çš„ç­çº§
+	 * »ñÈ¡Ö¸¶¨Äê¼¶ÏÂµÄ°à¼¶
+	 * @param gid Äê¼¶ID
+	 * @return JSON¸ñÊ½µÄ°à¼¶
 	 */
 	public String getClazzList(String gradeid){
 		int id = Integer.parseInt(gradeid);
-		//è·å–æ•°æ®
+		//»ñÈ¡Êı¾İ
 		List<Object> list = dao.getList(Clazz.class, "SELECT * FROM clazz WHERE gradeid=?", new Object[]{id});
-		//jsonåŒ–
+		//json»¯
 		JsonConfig config = new JsonConfig();
 		config.setExcludes(new String[]{"grade", "studentList"});
         String result = JSONArray.fromObject(list, config).toString();
@@ -48,15 +48,15 @@ public class ClazzService {
 	}
 	
 	/**
-	 * è·å–ç­çº§è¯¦ç»†ä¿¡æ¯
+	 * »ñÈ¡°à¼¶ÏêÏ¸ĞÅÏ¢
 	 * @param gradeid
 	 * @param page
 	 * @return
 	 */
 	public String getClazzDetailList(String gradeid, Page page) {
-		//è·å–æ•°æ®
+		//»ñÈ¡Êı¾İ
 		List<Clazz> list = dao.getClazzDetailList(gradeid, page);
-		//è·å–æ€»è®°å½•æ•°
+		//»ñÈ¡×Ü¼ÇÂ¼Êı
 		long total = 0;
 		if(!StringTool.isEmpty(gradeid)){
 			int gid = Integer.parseInt(gradeid);
@@ -64,20 +64,20 @@ public class ClazzService {
 		} else {
 			total = dao.count("SELECT COUNT(*) FROM clazz", new Object[]{});
 		}
-		//å®šä¹‰Map
+		//¶¨ÒåMap
 		Map<String, Object> jsonMap = new HashMap<String, Object>();  
-		//totalé”® å­˜æ”¾æ€»è®°å½•æ•°ï¼Œå¿…é¡»çš„
+		//total¼ü ´æ·Å×Ü¼ÇÂ¼Êı£¬±ØĞëµÄ
         jsonMap.put("total", total);
-        //rowsé”® å­˜æ”¾æ¯é¡µè®°å½• list 
+        //rows¼ü ´æ·ÅÃ¿Ò³¼ÇÂ¼ list 
         jsonMap.put("rows", list); 
-        //æ ¼å¼åŒ–Map,ä»¥jsonæ ¼å¼è¿”å›æ•°æ®
+        //¸ñÊ½»¯Map,ÒÔjson¸ñÊ½·µ»ØÊı¾İ
         String result = JSONObject.fromObject(jsonMap).toString();
         
         return result;
 	}
 
 	/**
-	 * æ·»åŠ ç­çº§
+	 * Ìí¼Ó°à¼¶
 	 * @param name
 	 * @param gradeid
 	 */
@@ -87,21 +87,21 @@ public class ClazzService {
 	}
 	
 	/**
-	 * åˆ é™¤ç­çº§
+	 * É¾³ı°à¼¶
 	 * @param clazzid
 	 * @throws Exception 
 	 */
 	public void deleteClazz(int clazzid) throws Exception {
-		//è·å–è¿æ¥
+		//»ñÈ¡Á¬½Ó
 		Connection conn = MysqlTool.getConnection();
 		try {
-			//å¼€å¯äº‹åŠ¡
+			//¿ªÆôÊÂÎñ
 			MysqlTool.startTransaction();
-			//åˆ é™¤æˆç»©è¡¨
+			//É¾³ı³É¼¨±í
 			dao.deleteTransaction(conn, "DELETE FROM escore WHERE clazzid=?", new Object[]{clazzid});
-			//åˆ é™¤è€ƒè¯•è®°å½•
+			//É¾³ı¿¼ÊÔ¼ÇÂ¼
 			dao.deleteTransaction(conn, "DELETE FROM exam WHERE clazzid=?", new Object[]{clazzid});
-			//åˆ é™¤ç”¨æˆ·
+			//É¾³ıÓÃ»§
 			List<Object> list = dao.getList(Student.class, "SELECT number FROM student WHERE clazzid=?",  new Object[]{clazzid});
 			if(list.size() > 0){
 				Object[] param = new Object[list.size()];
@@ -111,18 +111,18 @@ public class ClazzService {
 				}
 				String sql = "DELETE FROM user WHERE account IN ("+StringTool.getMark(list.size())+")";
 				dao.deleteTransaction(conn, sql, param);
-				//åˆ é™¤å­¦ç”Ÿ
+				//É¾³ıÑ§Éú
 				dao.deleteTransaction(conn, "DELETE FROM student WHERE clazzid=?", new Object[]{clazzid});
 			}
-			//åˆ é™¤ç­çº§çš„è¯¾ç¨‹å’Œè€å¸ˆçš„å…³è”
+			//É¾³ı°à¼¶µÄ¿Î³ÌºÍÀÏÊ¦µÄ¹ØÁª
 			dao.deleteTransaction(conn, "DELETE FROM clazz_course_teacher WHERE clazzid=?", new Object[]{clazzid});
-			//æœ€ååˆ é™¤ç­çº§
+			//×îºóÉ¾³ı°à¼¶
 			dao.deleteTransaction(conn, "DELETE FROM clazz WHERE id=?",  new Object[]{clazzid});
 			
-			//æäº¤äº‹åŠ¡
+			//Ìá½»ÊÂÎñ
 			MysqlTool.commit();
 		} catch (Exception e) {
-			//å›æ»šäº‹åŠ¡
+			//»Ø¹öÊÂÎñ
 			MysqlTool.rollback();
 			e.printStackTrace();
 			throw e;

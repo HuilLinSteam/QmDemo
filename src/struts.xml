@@ -4,8 +4,11 @@
     "http://struts.apache.org/dtds/struts-2.3.dtd">
 
 <struts>
+
 	<constant name="struts.i18n.encoding" value="utf-8"/>
+	
 	<package name="loginJSP" namespace="/" extends="struts-default">
+			
 		<!-- ajax请求 -->
 		<action name="login" class="com.action.LoginAction" method="login">
 		
@@ -20,6 +23,17 @@
 	</package>
 	
 	<package name="all" namespace="/" extends="struts-default">
+		<interceptors>  
+            <interceptor name="login"  
+                class="com.interceptor.LoginInterceptor">  
+            </interceptor>  
+            <!-- 拦截器栈 -->  
+            <interceptor-stack name="mydefault">  
+             <interceptor-ref name="defaultStack" />  
+             <interceptor-ref name="login" />            
+            </interceptor-stack>  
+        </interceptors> 
+        <default-interceptor-ref name="mydefault"></default-interceptor-ref>
 		<action name="*-*" class="com.action.{1}" method="{2}">
 			<result name="examStudentList">/WEB-INF/view/student/examStudentList.jsp</result>
 			<result name="studentNoteList">/WEB-INF/view/student/studentNoteList.jsp</result>
@@ -41,6 +55,31 @@
 			<result name="toExamListView">/WEB-INF/view/other/examList.jsp</result>
 		
 		</action>
+		
+		<!-- 课程列表 -->
+		<action name="toCourseListView" class="com.action.CourseAction" method="toCourseListView">
+		    <result>/WEB-INF/view/other/courseList.jsp</result>
+		</action>		
+		<action name="courseList" class="com.action.CourseAction" method="courseList"></action>
+		<action name="deleteCourse" class="com.action.CourseAction" method="deleteCourse"></action>
+		<action name="addCourse" class="com.action.CourseAction" method="addCourse"></action>
+		
+		<!-- 班级列表 -->
+		<action name="toClazzListView" class="com.action.ClazzAction" method="toClazzListView">
+		    <result>/WEB-INF/view/other/clazzList.jsp</result>
+		</action>
+		<action name="deleteClazz" class="com.action.ClazzAction" method="deleteClazz"></action>
+		<action name="addClazz" class="com.action.ClazzAction" method="addClazz"></action>
+		<action name="clazzDetailList" class="com.action.ClazzAction" method="clazzDetailList"></action>
+		<action name="clazzList" class="com.action.ClazzAction" method="clazzList"></action>
+		
+		<!-- 年级列表 -->
+		<action name="toGradeListView" class="com.action.GradeAction" method="toGradeListView">
+		    <result>/WEB-INF/view/other/gradeList.jsp</result>
+		</action>
+		<action name="deleteGrade" class="com.action.GradeAction" method="deleteGrade"></action>
+		<action name="addGrade" class="com.action.GradeAction" method="addGrade"></action>
+		<action name="gradeList" class="com.action.GradeAction" method="gradeList"></action>
 	</package>
 
 <!-- 	<include file="struts_zcr.xml"></include> -->
@@ -51,6 +90,6 @@
 <!-- 	<include file="struts_lqx.xml"></include> -->
 
 <!-- 	<include file="struts_ck.xml"></include> -->
-
+<!-- 	<include file="course.xml"></include> -->
 
 </struts>

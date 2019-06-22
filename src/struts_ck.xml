@@ -25,5 +25,5 @@
 			
 		</action>
 	</package>
-	<include file="struts_lqx.xml"></include>
+	
 </struts>
