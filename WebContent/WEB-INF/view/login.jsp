@@ -125,11 +125,11 @@
 						$("#vcodeImg").click();//切换验证码
 						$("input[name='vcode']").val("");//清空验证码输入框
 					} else if("admin" == msg){
-						window.location.href = "check?method=toAdminView";
+						window.location.href = "SystemAction-toAdminView";
 					} else if("student" == msg){
-						window.location.href = "check?method=toStudentView";
+						window.location.href = "SystemAction-toStudentView";
 					} else if("teacher" == msg){
-						window.location.href = "check?method=toTeacherView";
+						window.location.href = "SystemAction-toTeacherView";
 					}
 				}
 				

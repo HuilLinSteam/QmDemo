@@ -25,7 +25,11 @@ import org.apache.poi.hssf.util.HSSFColor;
 public class ExcelTool<T> {
 	
 	/**
+
 	 * 导入Excel
+
+	 * ����Excel
+
 	 * @param type
 	 * @param filePath
 	 * @return
@@ -37,6 +41,7 @@ public class ExcelTool<T> {
 	 * @throws Exception
 	 */
 	public List<T> importExcel(Class<T> type, InputStream is) throws FileNotFoundException, IOException, InstantiationException, IllegalAccessException, InvocationTargetException {
+
 		// 创建对Excel工作簿文件的引用
 		HSSFWorkbook workbook = new HSSFWorkbook(is); 
 		/*
@@ -47,7 +52,7 @@ public class ExcelTool<T> {
 		HSSFSheet sheet = workbook.getSheetAt(0);
 		//获取到Excel文件中的所有行数
         int rows = sheet.getPhysicalNumberOfRows();
-        //标题行
+      //标题行
         HSSFRow titleRow = null;
         int r = 0;
         for(; r < rows; r++){
@@ -67,13 +72,15 @@ public class ExcelTool<T> {
             HSSFRow row = sheet.getRow(r);
             if (row != null) {
             	T obj = type.newInstance();
+
             	//获取到该行中的所有的列
             	int cells = row.getPhysicalNumberOfCells();
-                //遍历列
+            	//遍历列
                 for (int j = 0; j <= cells; j++) {
                 	//获取到列的值
                     HSSFCell cell = row.getCell(j);
                     //获取列名
+
                     if (cell != null) {
                     	String name = titleRow.getCell(j).getStringCellValue();
                     	String value = "";
@@ -100,7 +107,11 @@ public class ExcelTool<T> {
 	}
 	
 	/**
+
 	 * 导出
+
+	 * ����
+
 	 * @param headers
 	 * @param list
 	 * @param out
@@ -110,6 +121,7 @@ public class ExcelTool<T> {
 	 */
 	public void exportExcel(String[] headers, List<T> list, OutputStream out) 
 			throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+
         // 声明一个工作薄
         HSSFWorkbook workbook = new HSSFWorkbook();
         // 生成一个表格
@@ -119,14 +131,15 @@ public class ExcelTool<T> {
         // 设置这些样式
         headerStyle.setFillForegroundColor(HSSFColor.SKY_BLUE.index);
         headerStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
-        // 生成一个字体
+        // 生成一个字�?
         HSSFFont font = workbook.createFont();
         font.setFontHeightInPoints((short) 12);
         font.setBoldweight(HSSFFont.BOLDWEIGHT_NORMAL);
-        // 把字体应用到当前的样式
+     // 把字体应用到当前的样式
         headerStyle.setFont(font);
 
-        // 产生表格标题行
+       
+
         HSSFRow row = sheet.createRow(0);
         for (int i = 0; i < headers.length; i++) {
             HSSFCell cell = row.createCell(i);
@@ -134,7 +147,11 @@ public class ExcelTool<T> {
             //HSSFRichTextString text = new HSSFRichTextString(headers[i]);
             cell.setCellValue(headers[i]);
         }
+
         // 遍历集合数据，产生数据行
+
+       
+
         int index = 0;
         for(T t : list) {
             index++;
@@ -145,7 +162,11 @@ public class ExcelTool<T> {
                 cell.setCellValue(value);
             }
         }
+
         //输出
+
+        //���
+
         try {
         	workbook.write(out);
     		out.close();
@@ -157,23 +178,15 @@ public class ExcelTool<T> {
 	
 	public void exportMapExcel(String[] headers, List<Map<String, Object>> list, OutputStream out) 
 			throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+
         // 声明一个工作薄
         HSSFWorkbook workbook = new HSSFWorkbook();
         // 生成一个表格
         HSSFSheet sheet = workbook.createSheet();
         // 生成一个样式
         HSSFCellStyle headerStyle = workbook.createCellStyle();
-        // 设置这些样式
-//        headerStyle.setFillForegroundColor(HSSFColor.SKY_BLUE.index);
-//        headerStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
-        // 生成一个字体
-//        HSSFFont font = workbook.createFont();
-//        font.setFontHeightInPoints((short) 12);
-//        font.setBoldweight(HSSFFont.BOLDWEIGHT_NORMAL);
-//        // 把字体应用到当前的样式
-//        headerStyle.setFont(font);
 
-        // 产生表格标题行
+
         HSSFRow row = sheet.createRow(0);
         for (int i = 0; i < headers.length; i++) {
             HSSFCell cell = row.createCell(i);
@@ -181,7 +194,11 @@ public class ExcelTool<T> {
             //HSSFRichTextString text = new HSSFRichTextString(headers[i]);
             cell.setCellValue(headers[i]);
         }
+
         // 遍历集合数据，产生数据行
+
+        
+
         int index = 0;
         for(Map<String, Object> map : list) {
             index++;
@@ -208,7 +225,10 @@ public class ExcelTool<T> {
             	}
             }
         }
+
         //输出
+
+       
         try {
         	workbook.write(out);
     		out.close();

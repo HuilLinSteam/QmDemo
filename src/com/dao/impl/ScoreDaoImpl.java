@@ -67,6 +67,7 @@ public class ScoreDaoImpl extends BaseDaoImpl implements ScoreDaoInter {
 				
 				//将成绩表id放入:便于获取单科成绩用于登记
 				map.put("course"+score.getCourseid(), score.getScore());	//key:科目Id，value：成绩
+
 				map.put("escoreid"+score.getCourseid(), score.getId());
 			}
 			if(exam.getType() == 1){

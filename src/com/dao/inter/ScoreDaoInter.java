@@ -7,14 +7,18 @@ import com.bean.Exam;
 
 
 /**
+
  * 鎿嶄綔鎴愮哗鐨勬暟鎹眰鎺ュ彛
+
+ * 操作成绩的数据层接口
+
  * @author bojiangzhou
  *
  */
 public interface ScoreDaoInter extends BaseDaoInter {
 	
 	/**
-	 * 鑾峰彇瀛︾敓鎴愮哗琛?
+	 * 获取学生成绩表
 	 * @param exam
 	 * @param param
 	 * @return

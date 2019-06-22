@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+    "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<!--  <constant name="struts.multipart.saveDir" value="/tmp"/>  -->
+	<package name="StudentJsp" namespace="/" extends="struts-default">
+		<action name="*-*" class="com.action.{1}" method="{2}">
+			<result name="examStudentList">/WEB-INF/view/student/examStudentList.jsp</result>
+			<result name="studentNoteList">/WEB-INF/view/student/studentNoteList.jsp</result>
+			<result name="toStudentPersonalView">/WEB-INF/view/student/studentPersonal.jsp</result>
+			<result name="loginOut">/index.jsp</result>
+			<!-- 管理员层对学生的管理 -->
+			<result name="toStudentListView">/WEB-INF/view/student/studentList.jsp</result>
+<!-- 			<result name="adminPersonal">/WEB-INF/view/admin/adminPersonal.jsp</result> -->
+<!-- 			<result name="loginOut">/index.jsp</result> -->
+<!-- 			<result name="toAdminView">/WEB-INF/view/admin/admin.jsp</result> -->
+<!-- 			<result name="toStudentView">/WEB-INF/view/student/student.jsp</result> -->
+<!-- 			<result name="toTeacherView">/WEB-INF/view/teacher/teacher.jsp</result> -->
+<!-- 			<result name="teacherPersonal">/WEB-INF/view/teacher/teacherPersonal.jsp</result> -->
+<!-- 			<result name="loginOut">/index.jsp</result> -->
+<!-- 			<result name="toTeacherNoteListView">/WEB-INF/view/teacher/teacherNoteList.jsp</result> -->
+<!-- 			<result name="toExamTeacherView">/WEB-INF/view/teacher/examTeacherList.jsp</result> -->
+<!-- 			<result name="toTeacherListView">/WEB-INF/view/teacher/teacherList.jsp</result> -->
+			
+		</action>
+	</package>
+	<include file="struts_lqx.xml"></include>
+</struts>

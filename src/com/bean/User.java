@@ -9,7 +9,9 @@ public class User {
 	private String account;
 	private String password = "111111";
 	private String name;
-	private int type=USER_ADMIN;//ѧ���û�
+
+	private int type;
+
 	public int getId() {
 		return id;
 	}

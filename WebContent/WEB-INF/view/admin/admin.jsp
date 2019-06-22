@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="s" uri="/struts-tags" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -22,7 +23,7 @@
 						},
 						{"menuid":"2","icon":"","menuname":"学生信息管理",
 							"menus":[
-									{"menuid":"21","menuname":"学生列表","icon":"icon-user-student","url":"StudentServlet?method=toStudentListView"},
+									{"menuid":"21","menuname":"学生列表","icon":"icon-user-student","url":"StudentAction-toStudentListView"},
 								]
 						},
 						{"menuid":"3","icon":"","menuname":"教师信息管理",
@@ -39,7 +40,7 @@
 						},
 						{"menuid":"5","icon":"","menuname":"系统管理",
 							"menus":[
-							        {"menuid":"51","menuname":"系统设置","icon":"icon-set","url":"SystemServlet?method=toAdminPersonalView"},
+							        {"menuid":"51","menuname":"系统设置","icon":"icon-set","url":"SystemAction-toAdminPersonalView"},
 								]
 						}
 				]};
@@ -56,12 +57,14 @@
 	</noscript>
     <div region="north" split="true" border="false" style="overflow: hidden; height: 30px;
         background: url(images/layout-browser-hd-bg.gif) #7f99be repeat-x center 50%;
+
         line-height: 20px;color: #fff; font-family: Verdana, 微软雅黑,黑体">
-        <span style="float:right; padding-right:20px;" class="head"><span style="color:red; font-weight:bold;">${user.name}&nbsp;</span>您好&nbsp;&nbsp;&nbsp;<a href="SystemServlet?method=LoginOut" id="loginOut">安全退出</a></span>
+        <span style="float:right; padding-right:20px;" class="head"><span style="color:red; font-weight:bold;">${user.name}&nbsp;</span>您好&nbsp;&nbsp;&nbsp;<a href="SystemAction-loginOut" id="loginOut">安全退出</a></span>
+
         <span style="padding-left:10px; font-size: 16px; ">SWU学生信息管理系统</span>
     </div>
     <div region="south" split="true" style="height: 30px; background: #D2E0F2; ">
-        <div class="footer">Copyright &copy; SWU By 伯姜洲</div>
+        <div class="footer">Copyright &copy;2019</div>
     </div>
     <div region="west" hide="true" split="true" title="导航菜单" style="width:180px;" id="west">
 	<div id="nav" class="easyui-accordion" fit="true" border="false">

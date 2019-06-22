@@ -10,7 +10,7 @@
 	<script type="text/javascript" src="easyui/jquery.min.js"></script>
 	<script type="text/javascript" src="easyui/jquery.easyui.min.js"></script>
 	<script type="text/javascript" src="easyui/themes/locale/easyui-lang-zh_CN.js"></script>
-	<script type="text/javascript">
+	<script type="text/javascript" charset="utf-8">
 		//验证只能为数字
 		function scoreBlur(score){
 			if(!/^[1-9]\d*$/.test($(score).val())){
@@ -124,7 +124,7 @@
                 		//动态显示该次考试的科目
     	            	$.ajax({
     	            		type: "post",
-    						url: "ScoreServlet?method=ColumnList",
+    						url: "SoreAction-columnList",
     						data: data,
     						dataType: "json",
     						async: false,
@@ -153,7 +153,7 @@
     	            	});
                 		//加载数据
     			    	setTimeout(function(){
-    				    	$("#regEscoreList").datagrid("options").url = "ScoreServlet?method=ScoreList&t="+new Date().getTime();
+    				    	$("#regEscoreList").datagrid("options").url = "SoreAction-scoreList?t="+new Date().getTime();
     				    	$("#regEscoreList").datagrid("options").queryParams = data;
     				    	$("#regEscoreList").datagrid("reload");
     			    	}, 30)
@@ -169,7 +169,7 @@
                		$("#regCourseList").combobox("readonly", false);
                		
 	            	$("#regClazzList").combobox("options").queryParams = {gradeid: exam.gradeid};
-	            	$("#regClazzList").combobox("options").url = "TeacherServlet?method=GetExamClazz";
+	            	$("#regClazzList").combobox("options").url = "TeacherAction-getExamClazz";
 	            	$("#regClazzList").combobox("reload");
             	}
             	
@@ -189,7 +189,7 @@
             	//动态显示该次考试的科目
             	$.ajax({
             		type: "post",
-					url: "ScoreServlet?method=ColumnList",
+					url: "SoreAction-columnList",
 					data: data,
 					dataType: "json",
 					async: false,
@@ -199,7 +199,7 @@
 			                var column={};  
 			                column["field"] = "course"+course.id;    
 			                column["title"] = course.name;  
-			                column["width"] = 80;  
+			                column["width"] = 80; 
 			                column["align"] = "center";
 			                column["resizable"] = false;  
 			                column["sortable"] = true;  
@@ -227,7 +227,7 @@
 					}
             	});
             	setTimeout(function(){
-			    	$("#escoreList").datagrid("options").url = "ScoreServlet?method=ScoreList&t="+new Date().getTime();
+			    	$("#escoreList").datagrid("options").url = "SoreAction-scoreList?t="+new Date().getTime();
 			    	$("#escoreList").datagrid("options").queryParams = data;
 			    	$("#escoreList").datagrid("reload");
 			    	
@@ -273,7 +273,7 @@
 							var data = {gradeid:gradeid,clazzid:clazzid,courseid:courseid,name:name,etime:etime,remark:remark,type:'2'};
 							$.ajax({
 								type: "post",
-								url: "ExamServlet?method=AddExam&t="+new Date().getTime(),
+								url: "ExamAction-addLitterExam?t="+new Date().getTime(),
 								data: data,
 								success: function(msg){
 									if(msg == "success"){
@@ -311,7 +311,7 @@
 			onBeforeOpen: function(){
 				$.ajax({
 					type: "post",
-					url: "TeacherServlet?method=GetTeacher&t="+new Date().getTime(),
+					url: "TeacherAction-getTeacher?t="+new Date().getTime(),
 					dataType: "json",
 					success: function(result){
 						var courseList = result.courseList;
@@ -427,7 +427,7 @@
 	    	}
         	//var data = {id: exam.id, gradeid: exam.gradeid, clazzid:clazzid,courseid:exam.courseid, type: exam.type};
 	    	
-        	var url = "ScoreServlet?method=ExportScore&id="+exam.id+"&gradeid="+exam.gradeid+"&clazzid="+clazzid+"&courseid="+exam.courseid+"&type="+exam.type;
+        	var url = "SoreAction-exportScore?id="+exam.id+"&gradeid="+exam.gradeid+"&clazzid="+clazzid+"&courseid="+exam.courseid+"&type="+exam.type;
 	    	
 	  		window.open(url, "_blank");
 	  	});
@@ -440,12 +440,12 @@
 	  		multiple: false, //可多选
 	  		editable: false, //不可编辑
 	  		method: "post",
-	  		url: "ClazzServlet?method=ClazzList&t="+new Date().getTime(),
+	  		url: "ClazzAction-clazzList?t="+new Date().getTime(),
 	  		onChange: function(newValue, oldValue){
 	  			var exam = $("#dataList").datagrid("getSelected");
             	var data = {id: exam.id, gradeid: exam.gradeid, clazzid:newValue,courseid:exam.courseid, type: exam.type};
 	  			
-	  			$("#escoreList").datagrid("options").url = "ScoreServlet?method=ScoreList&t="+new Date().getTime();
+	  			$("#escoreList").datagrid("options").url = "SoreAction-scoreList?t="+new Date().getTime();
 		    	$("#escoreList").datagrid("options").queryParams = data;
 		    	$("#escoreList").datagrid("reload");
 	  		}
@@ -460,7 +460,7 @@
 	  		console.log(score);
 	  		$.ajax({
 				type: "post",
-				url: "ScoreServlet?method=SetScore&t="+new Date().getTime(),
+				url: "SoreAction-setScore?t="+new Date().getTime(),
 				data: {score: score},
 				success: function(msg){
 					if(msg == "success"){
@@ -497,7 +497,7 @@
 	  			//加载该年级下的班级
 	  			$("#regCourseList").combobox("clear");
 	  			$("#regCourseList").combobox("options").queryParams = {gradeid:exam.gradeid, clazzid:newValue};
-	  			$("#regCourseList").combobox("options").url = "TeacherServlet?method=GetExamCourse&t="+new Date().getTime();
+	  			$("#regCourseList").combobox("options").url = "TeacherAction-getExamCourse?t="+new Date().getTime();
 	  			
 	  			setTimeout(function(){
 		  			$("#regCourseList").combobox("reload")
@@ -533,7 +533,7 @@
             		//动态显示该次考试的科目
 	            	$.ajax({
 	            		type: "post",
-						url: "ScoreServlet?method=ColumnList",
+						url: "SoreAction-columnList",
 						data: data,
 						dataType: "json",
 						async: false,
@@ -562,7 +562,7 @@
 						}
 	            	});
 			    	setTimeout(function(){
-				    	$("#regEscoreList").datagrid("options").url = "ScoreServlet?method=ScoreList&t="+new Date().getTime();
+				    	$("#regEscoreList").datagrid("options").url = "SoreAction-scoreList?t="+new Date().getTime();
 				    	$("#regEscoreList").datagrid("options").queryParams = data;
 				    	$("#regEscoreList").datagrid("reload");
 			    	}, 30)

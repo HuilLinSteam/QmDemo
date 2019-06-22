@@ -15,12 +15,27 @@ import java.util.Set;
 import javax.servlet.http.HttpServletResponse;
 
 import com.bean.Course;
+
+import com.bean.CourseItem;
 import com.bean.Exam;
+import com.bean.Page;
 import com.bean.Student;
+import com.bean.Teacher;
+import com.bean.User;
+import com.dao.impl.BaseDaoImpl;
+import com.dao.impl.ExamDaoImpl;
 import com.dao.impl.ScoreDaoImpl;
+import com.dao.impl.StudentDaoImpl;
+import com.dao.impl.TeacherDaoImpl;
+import com.dao.inter.BaseDaoInter;
+import com.dao.inter.ExamDaoInter;
 import com.dao.inter.ScoreDaoInter;
+import com.dao.inter.StudentDaoInter;
+import com.dao.inter.TeacherDaoInter;
 import com.tools.ExcelTool;
 import com.tools.MysqlTool;
+import com.tools.StringTool;
+
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -216,7 +231,9 @@ public class ScoreService {
 		//获取考试信息
 		Exam em = (Exam) dao.getObject(Exam.class, "SELECT name, time FROM exam WHERE id=?", new Object[]{exam.getId()});
 		//设置文件名
+
 		System.out.println("exam++++"+exam.getName());
+
 		String fileName = em.getName()+".xls";
 		//定义输出类型
 		response.setContentType("application/msexcel;charset=utf-8");

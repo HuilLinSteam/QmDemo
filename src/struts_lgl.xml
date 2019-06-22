@@ -19,4 +19,5 @@
 			<result name="toExamListView">/WEB-INF/view/other/examList.jsp</result>
 		</action>
 	</package>
+	<include file="struts_ck.xml"></include>
 </struts>

@@ -14,6 +14,7 @@ import org.apache.struts2.interceptor.ServletResponseAware;
 
 import com.bean.Exam;
 import com.bean.Page;
+
 import com.bean.User;
 
 import com.service.ExamService;
@@ -26,8 +27,7 @@ public class ExamAction extends ActionSupport implements ServletRequestAware,Ser
 	private ExamService service = new ExamService();
 	Exam exam;
 	public void teacherExamList() throws IOException {
-		//获得当前用户
-		
+
 		User user = (User) request.getSession().getAttribute("user");
 		String number = user.getAccount();
 		String result = service.teacherExamList(number);
@@ -78,7 +78,6 @@ public class ExamAction extends ActionSupport implements ServletRequestAware,Ser
 	}
 	//delete
 	public void deleteExam() throws IOException {
-	
 		//获取要删除的id
 		int id = Integer.parseInt(request.getParameter("id"));
 		try {
@@ -89,6 +88,30 @@ public class ExamAction extends ActionSupport implements ServletRequestAware,Ser
 			e.printStackTrace();
 		}
 	}
+	public void addLitterExam() throws IOException {
+		//获取参数名
+		Enumeration<String> pNames = request.getParameterNames();
+		Exam exam = new Exam();
+		while(pNames.hasMoreElements()){
+			String pName = pNames.nextElement();
+			String value = request.getParameter(pName);
+			try {
+				BeanUtils.setProperty(exam, pName, value);
+			} catch (IllegalAccessException | InvocationTargetException e) {
+				e.printStackTrace();
+			}
+		}
+		try {
+			System.out.println(exam);
+			service.addExam(exam);
+//>>>>>>> 3554a96118cb1e41ee7939e1c97c6841fa0a3d22
+			response.getWriter().write("success");
+		} catch (Exception e) {
+			response.getWriter().write("fail");
+			e.printStackTrace();
+		}
+	}
+//<<<<<<< HEAD
 	@Override
 	public void setServletResponse(HttpServletResponse arg0) {
 		response=arg0;
@@ -105,4 +128,18 @@ public class ExamAction extends ActionSupport implements ServletRequestAware,Ser
 	public void setExam(Exam exam) {
 		this.exam = exam;
 	}
+
+	
+	public void studentExamList() throws IOException {
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpServletResponse response = ServletActionContext.getResponse();
+		//获取当前用户
+		User user = (User) request.getSession().getAttribute("user");
+		String number = user.getAccount();
+		
+		String result = service.studentExamList(number);
+		response.setContentType("text/html;charset=UTF-8"); 
+		response.getWriter().write(result);
+	}
+	
 }

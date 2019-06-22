@@ -3,5 +3,9 @@ encoding//src/com/action/GradeAction.java=UTF-8
 encoding//src/com/action/LoginAction.java=UTF-8
 encoding//src/com/action/SystemAction.java=UTF-8
 encoding//src/com/dao/impl/BaseDaoImpl.java=UTF-8
+<<<<<<< HEAD
 encoding//src/com/tools/ExcelTool.java=UTF-8
+=======
+encoding//src/com/service/TeacherService.java=UTF-8
+>>>>>>> 3554a96118cb1e41ee7939e1c97c6841fa0a3d22
 encoding//src/com/tools/MysqlTool.java=UTF-8

@@ -28,7 +28,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 /**
- * 教师类服务层
+ * 鏁欏笀绫绘湇鍔″眰
  * @author bojiangzhou
  *
  */
@@ -41,55 +41,55 @@ public class TeacherService {
 	}
 	
 	/**
-	 * 获取教师信息
+	 * 鑾峰彇鏁欏笀淇℃伅
 	 * @param page
 	 * @param rows
 	 * @return
 	 */
 	public String getTeacherList(Page page) {
-		//sql语句
+		//sql璇彞
 		String sql = "SELECT * FROM teacher ORDER BY id DESC LIMIT ?,?";
-		//获取数据
+		//鑾峰彇鏁版嵁
 		List<Teacher> list = dao.getTeacherList(sql, new Object[]{page.getStart(), page.getSize()}, null, null);
-		//获取总记录数
+		//鑾峰彇鎬昏褰曟暟
 		long total = dao.count("SELECT COUNT(*) FROM teacher", new Object[]{});
-		//定义Map
+		//瀹氫箟Map
 		Map<String, Object> jsonMap = new HashMap<String, Object>();  
-		//total键 存放总记录数，必须的
+		//total閿� 瀛樻斁鎬昏褰曟暟锛屽繀椤荤殑
         jsonMap.put("total", total);
-        //rows键 存放每页记录 list 
+        //rows閿� 瀛樻斁姣忛〉璁板綍 list 
         jsonMap.put("rows", list); 
-        //格式化Map,以json格式返回数据
+        //鏍煎紡鍖朚ap,浠son鏍煎紡杩斿洖鏁版嵁
         String result = JSONObject.fromObject(jsonMap).toString();
         
-        //返回
+        //杩斿洖
 		return result;
 	}
 	
 	/**
-	 * 获取某个老师的具体信息：包括所选课程
+	 * 鑾峰彇鏌愪釜鑰佸笀鐨勫叿浣撲俊鎭細鍖呮嫭鎵�閫夎绋�
 	 * @param number
 	 * @return
 	 */
 	public Teacher getTeacher(String number) {
-		//sql语句
+		//sql璇彞
 		String sql = "SELECT * FROM teacher WHERE number=?";
-		//获取数据
+		//鑾峰彇鏁版嵁
 		List<Teacher> list = dao.getTeacherList(sql, new Object[]{number}, null, null);
-        //返回
+        //杩斿洖
 		return list.get(0);
 	}
 	
 	/**
-	 * 获取某年级下老师的班级
+	 * 鑾峰彇鏌愬勾绾т笅鑰佸笀鐨勭彮绾�
 	 * @param number
 	 * @param grade
 	 * @return
 	 */
 	public String getExamClazz(String number, Grade grade) {
-		//sql语句
+		//sql璇彞
 		String sql = "SELECT * FROM teacher WHERE number=?";
-		//获取数据
+		//鑾峰彇鏁版嵁
 		Teacher list = dao.getTeacherList(sql, new Object[]{number}, grade, null).get(0);
 		
 		List<Clazz> clazzList = new LinkedList<>();
@@ -108,21 +108,21 @@ public class TeacherService {
 		}
 		String result = JSONArray.fromObject(clazzList).toString();
 		
-        //返回
+        //杩斿洖
 		return result;
 	}
 	
 	/**
-	 * 查询考试下老师的课程
+	 * 鏌ヨ鑰冭瘯涓嬭�佸笀鐨勮绋�
 	 * @param number
 	 * @param grade
 	 * @param clazz
 	 * @return
 	 */
 	public String getExamClazz(String number, Grade grade, Clazz clazz) {
-		//sql语句
+		//sql璇彞
 		String sql = "SELECT * FROM teacher WHERE number=?";
-		//获取数据
+		//鑾峰彇鏁版嵁
 		Teacher list = dao.getTeacherList(sql, new Object[]{number}, grade, clazz).get(0);
 		
 		List<Course> courseList = new LinkedList<>();
@@ -132,34 +132,34 @@ public class TeacherService {
 		}
 		String result = JSONArray.fromObject(courseList).toString();
 		
-        //返回
+        //杩斿洖
 		return result;
 	}
 	
 	/**
-	 * 获取老师详细信息
+	 * 鑾峰彇鑰佸笀璇︾粏淇℃伅
 	 * @param number
 	 * @return
 	 */
 	public String getTeacherResult(String number) {
 		Teacher teacher = getTeacher(number);
 		String result = JSONObject.fromObject(teacher).toString();
-        //返回
+        //杩斿洖
 		return result;
 	}
 	
 	/**
-	 * 添加老师信息
+	 * 娣诲姞鑰佸笀淇℃伅
 	 * @param teacher
 	 * @throws Exception 
 	 */
 	public void addTeacher(Teacher teacher) throws Exception {
 		Connection conn = MysqlTool.getConnection();
 		try {
-			//开启事务
+			//寮�鍚簨鍔�
 			MysqlTool.startTransaction();
 			
-			String sql = "INSERT INTO teacher(number, name, sex, qq, photo) value(?,?,?,?,?)";
+			String sql = "INSERT INTO teacher(number, name, sex, phone, qq) value(?,?,?,?,?)";
 			Object[] param = new Object[]{
 					teacher.getNumber(), 
 					teacher.getName(), 
@@ -167,9 +167,9 @@ public class TeacherService {
 					teacher.getPhone(),
 					teacher.getQq()
 				};
-			//添加教师信息
+			//娣诲姞鏁欏笀淇℃伅
 			int teacherid = dao.insertReturnKeysTransaction(conn, sql, param);
-			//设置课程
+			//璁剧疆璇剧▼
 			if(teacher.getCourse() != null && teacher.getCourse().length > 0){
 				for(String course : teacher.getCourse()){
 					String[] gcc = course.split("_");
@@ -182,7 +182,7 @@ public class TeacherService {
 							new Object[]{clazzid, gradeid, courseid, teacherid});
 				}
 			}
-			//添加用户记录
+			//娣诲姞鐢ㄦ埛璁板綍
 			dao.insertTransaction(conn, "INSERT INTO user(account, name, type) value(?,?,?)", 
 					new Object[]{
 						teacher.getNumber(),
@@ -190,10 +190,10 @@ public class TeacherService {
 						User.USER_TEACHER
 				});
 			
-			//提交事务
+			//鎻愪氦浜嬪姟
 			MysqlTool.commit();
 		} catch (Exception e) {
-			//回滚事务
+			//鍥炴粴浜嬪姟
 			MysqlTool.rollback();
 			e.printStackTrace();
 			throw e;
@@ -203,14 +203,14 @@ public class TeacherService {
 	}
 	
 	/**
-	 * 修改教师信息
+	 * 淇敼鏁欏笀淇℃伅
 	 * @param teacher
 	 * @throws Exception
 	 */
 	public void editTeacher(Teacher teacher) throws Exception {
 		Connection conn = MysqlTool.getConnection();
 		try {
-			//开启事务
+			//寮�鍚簨鍔�
 			MysqlTool.startTransaction();
 			
 			String sql = "UPDATE teacher set name=?,sex=?,phone=?,qq=? WHERE id=?";
@@ -221,14 +221,14 @@ public class TeacherService {
 					teacher.getQq(),
 					teacher.getId()
 				};
-			//修改教师信息
+			//淇敼鏁欏笀淇℃伅
 			dao.updateTransaction(conn, sql, param);
-			//修改系统用户信息
+			//淇敼绯荤粺鐢ㄦ埛淇℃伅
 			dao.update("UPDATE user SET name=? WHERE account=?", 
 					new Object[]{teacher.getName(), teacher.getNumber()});
-			//删除教师与课程的关联
+			//鍒犻櫎鏁欏笀涓庤绋嬬殑鍏宠仈
 			dao.deleteTransaction(conn, "DELETE FROM clazz_course_teacher WHERE teacherid =?", new Object[]{teacher.getId()});
-			//设置课程
+			//璁剧疆璇剧▼
 			if(teacher.getCourse() != null && teacher.getCourse().length > 0){
 				for(String course : teacher.getCourse()){
 					String[] gcc = course.split("_");
@@ -242,10 +242,10 @@ public class TeacherService {
 				}
 			}
 			
-			//提交事务
+			//鎻愪氦浜嬪姟
 			MysqlTool.commit();
 		} catch (Exception e) {
-			//回滚事务
+			//鍥炴粴浜嬪姟
 			MysqlTool.rollback();
 			e.printStackTrace();
 			throw e;
@@ -255,14 +255,14 @@ public class TeacherService {
 	}
 	
 	/**
-	 * 教师修改个人信息
+	 * 鏁欏笀淇敼涓汉淇℃伅
 	 * @param teacher
 	 */
 	public void editTeacherPersonal(Teacher teacher){
 		
 		String sql = "UPDATE teacher SET name=?, sex=?, phone=?, qq=? WHERE number=?";
 		
-		//更新信息
+		//鏇存柊淇℃伅
 		dao.update(sql, new Object[]{
 				teacher.getName(), 
 				teacher.getSex(),
@@ -275,34 +275,34 @@ public class TeacherService {
 	}
 	
 	/**
-	 * 删除教师
-	 * @param ids 教师ID数组
-	 * @param numbers 教师工号数组
+	 * 鍒犻櫎鏁欏笀
+	 * @param ids 鏁欏笀ID鏁扮粍
+	 * @param numbers 鏁欏笀宸ュ彿鏁扮粍
 	 * @throws Exception 
 	 */
 	public void deleteTeacher(String[] ids, String[] numbers) throws Exception{
-		//获取占位符
+		//鑾峰彇鍗犱綅绗�
 		String mark = StringTool.getMark(ids.length);
 		Integer tid[] = new Integer[ids.length];
 		for(int i =0 ;i < ids.length;i++){
 			tid[i] = Integer.parseInt(ids[i]);
 		}
-		//获取连接
+		//鑾峰彇杩炴帴
 		Connection conn = MysqlTool.getConnection();
-		//开启事务
+		//寮�鍚簨鍔�
 		MysqlTool.startTransaction();
 		try {
-			//删除教师与课程的关联
+			//鍒犻櫎鏁欏笀涓庤绋嬬殑鍏宠仈
 			dao.deleteTransaction(conn, "DELETE FROM clazz_course_teacher WHERE teacherid IN("+mark+")", tid);
-			//删除教师
+			//鍒犻櫎鏁欏笀
 			dao.deleteTransaction(conn, "DELETE FROM teacher WHERE id IN("+mark+")", tid);
-			//删除系统用户
+			//鍒犻櫎绯荤粺鐢ㄦ埛
 			dao.deleteTransaction(conn, "DELETE FROM user WHERE account IN("+mark+")",  numbers);
 			
-			//提交事务
+			//鎻愪氦浜嬪姟
 			MysqlTool.commit();
 		} catch (Exception e) {
-			//回滚事务
+			//鍥炴粴浜嬪姟
 			MysqlTool.rollback();
 			e.printStackTrace();
 			throw e;
@@ -312,7 +312,7 @@ public class TeacherService {
 	}
 	
 	/**
-	 * 设置照片
+	 * 璁剧疆鐓х墖
 	 * @param number
 	 * @param fileName 
 	 */
