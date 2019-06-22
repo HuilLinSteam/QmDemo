@@ -54,7 +54,7 @@ public class SystemAction extends ActionSupport{
 		SystemInfo sys = service.editSystemInfo(name, value);
 		
     	request.getServletContext().setAttribute("systemInfo", sys);
-    	
+    	response.setContentType("text/html;charset=UTF-8"); 
 		response.getWriter().write("success");
 	}
 
@@ -65,6 +65,7 @@ public class SystemAction extends ActionSupport{
 		user.setAccount(request.getParameter("account"));
 		user.setPassword(request.getParameter("password"));
 		service.editPassword(user);
+		response.setContentType("text/html;charset=UTF-8"); 
 		response.getWriter().write("success");
 	}
 
@@ -78,7 +79,7 @@ public class SystemAction extends ActionSupport{
 	
 	private void allAccount(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String result = service.getAccountList();
-		
+		response.setContentType("text/html;charset=UTF-8"); 
         response.getWriter().write(result);
 	}
 

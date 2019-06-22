@@ -18,12 +18,18 @@ public class SoreAction extends ActionSupport{
 		//创建服务层对象
 		private ScoreService service = new ScoreService();
 		
+
 		public void columnList() throws IOException {
 			HttpServletRequest request = ServletActionContext.getRequest();
 			HttpServletResponse response = ServletActionContext.getResponse();
 			Enumeration<String> pNames = request.getParameterNames();
 			Exam exam = new Exam();
+			
+			/* hasMoreElements( )用于测试此枚举是否包含更多的元素*/
 			while(pNames.hasMoreElements()){
+				/*nextElement()方法如果此枚举对象至少还有一个可提供的元素，则返回此枚举的下一个元素。*/
+				/*pName为枚举对象*/
+				/*value是pName对象的值*/
 				String pName = pNames.nextElement();
 				String value = request.getParameter(pName);
 				try {

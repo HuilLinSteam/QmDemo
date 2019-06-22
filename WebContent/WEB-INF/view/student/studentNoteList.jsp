@@ -20,7 +20,7 @@
 	        collapsible:false,//是否可折叠的 
 	        fit: true,//自动大小 
 	        method: "post",
-	        url:"StudentServlet?method=StudentClazzList&t="+new Date().getTime(),
+	        url:"StudentAction-studentClazzList",
 	        idField:'id', 
 	        singleSelect: true,//是否单选 
 	        pagination: true,//分页控件 
@@ -104,7 +104,6 @@
 				$("#edit_qq").textbox('setValue', selectRow.qq);
 				$("#edit_grade").textbox('setValue', selectRow.grade.name);
 				$("#edit_clazz").textbox('setValue', selectRow.clazz.name);
-				$("#edit_photo").attr("src", "PhotoServlet?method=GetPhoto&type=2&number="+selectRow.number);
 			}
 	    });
 	   
@@ -119,40 +118,37 @@
 	
 	<!-- 显示学生信息窗口 -->
 	<div id="editDialog" style="padding: 10px">
-		<div style="float: right; margin: 20px 20px 0 0; width: 200px; border: 1px solid #EBF3FF">
-	    	<img id="edit_photo" alt="照片" style="max-width: 200px; max-height: 400px;" title="照片" src=""/>
-	    </div>   
     	<form id="editForm" method="post">
 	    	<table cellpadding="8" >
 	    		<tr>
 	    			<td>学号:</td>
 	    			<td>
-	    				<input id="edit_number" data-options="readonly: true" class="easyui-textbox" style="width: 200px; height: 30px;" type="text" name="number" data-options="readonly:true" />
+	    				<input id="edit_number" name="number" data-options="readonly: true" class="easyui-textbox" style="width: 200px; height: 30px;" type="text"  data-options="readonly:true" />
 	    			</td>
 	    		</tr>
 	    		<tr>
 	    			<td>姓名:</td>
-	    			<td><input id="edit_name" style="width: 200px; height: 30px;" class="easyui-textbox" type="text" name="name" data-options="readonly:true" /></td>
+	    			<td><input id="edit_name" name="name" style="width: 200px; height: 30px;" class="easyui-textbox" type="text"  data-options="readonly:true" /></td>
 	    		</tr>
 	    		<tr>
 	    			<td>性别:</td>
-	    			<td><select id="edit_sex" class="easyui-combobox" data-options="editable: false, readonly:true, panelHeight: 50, width: 60, height: 30" name="sex"><option value="男">男</option><option value="女">女</option></select></td>
+	    			<td><select id="edit_sex" name="sex" class="easyui-combobox" data-options="editable: false, readonly:true, panelHeight: 50, width: 60, height: 30"><option value="男">男</option><option value="女">女</option></select></td>
 	    		</tr>
 	    		<tr>
 	    			<td>电话:</td>
-	    			<td><input id="edit_phone" style="width: 200px; height: 30px;" class="easyui-textbox" type="text" name="phone" data-options="readonly:true" /></td>
+	    			<td><input id="edit_phone" name="phone" style="width: 200px; height: 30px;" class="easyui-textbox" type="text"  data-options="readonly:true" /></td>
 	    		</tr>
 	    		<tr>
 	    			<td>QQ:</td>
-	    			<td><input id="edit_qq" style="width: 200px; height: 30px;" class="easyui-textbox" type="text" name="qq" data-options="readonly:true" /></td>
+	    			<td><input id="edit_qq"  name="qq" style="width: 200px; height: 30px;" class="easyui-textbox" type="text" data-options="readonly:true" /></td>
 	    		</tr>
 	    		<tr>
 	    			<td>年级:</td>
-	    			<td><input id="edit_grade" style="width: 200px; height: 30px;" class="easyui-textbox" data-options="readonly:true" name="gradeid" /></td>
+	    			<td><input id="edit_grade" name="gradeid" style="width: 200px; height: 30px;" class="easyui-textbox" data-options="readonly:true"  /></td>
 	    		</tr>
 	    		<tr>
 	    			<td>班级:</td>
-	    			<td><input id="edit_clazz" style="width: 200px; height: 30px;" class="easyui-textbox" data-options="readonly:true" name="clazzid" /></td>
+	    			<td><input id="edit_clazz"  name="clazzid" style="width: 200px; height: 30px;" class="easyui-textbox" data-options="readonly:true" /></td>
 	    		</tr>
 	    	</table>
 	    </form>

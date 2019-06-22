@@ -18,11 +18,11 @@ public class GradeAction extends ActionSupport{
 	public void gradeList() throws IOException {
 		HttpServletRequest request = ServletActionContext.getRequest();
 		HttpServletResponse response = ServletActionContext.getResponse();
-		//è·å–å‚æ•°ï¼šcourse=courseï¼šæ˜¯å¦è·å–å¹´çº§çš„åŒæ—¶è¿”å›è¯¥å¹´çº§ä¸‹çš„è¯¾ç¨‹
+		//»ñÈ¡²ÎÊı£ºcourse=course£ºÊÇ·ñ»ñÈ¡Äê¼¶µÄÍ¬Ê±·µ»Ø¸ÃÄê¼¶ÏÂµÄ¿Î³Ì
 		String course = request.getParameter("course");
 		
 		String result = service.getGradeList(course);
-		//è¿”å›æ•°æ®
+		//·µ»ØÊı¾İ
 		response.setContentType("text/html;charset=UTF-8"); 
         response.getWriter().write(result);
 	}

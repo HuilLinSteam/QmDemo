@@ -52,4 +52,16 @@ public class ExamAction extends ActionSupport{
 		}
 	}
 	
+	public void studentExamList() throws IOException {
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpServletResponse response = ServletActionContext.getResponse();
+		//获取当前用户
+		User user = (User) request.getSession().getAttribute("user");
+		String number = user.getAccount();
+		
+		String result = service.studentExamList(number);
+		response.setContentType("text/html;charset=UTF-8"); 
+		response.getWriter().write(result);
+	}
+	
 }

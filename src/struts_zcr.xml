@@ -11,6 +11,7 @@
 			<result name="toTeacherNoteListView">/WEB-INF/view/teacher/teacherNoteList.jsp</result>
 			<result name="toExamTeacherView">/WEB-INF/view/teacher/examTeacherList.jsp</result>
 			<result name="toTeacherListView">/WEB-INF/view/teacher/teacherList.jsp</result>
+			
 		</action>
 	</package>
 </struts>

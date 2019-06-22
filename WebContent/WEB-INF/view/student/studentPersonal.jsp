@@ -19,12 +19,12 @@
 	    	title: "修改密码",
 	    	width: 500,
 	    	height: 300,
-	    	iconCls: "icon-add",
+	    	iconCls: "icon-add",//图标
 	    	modal: true,
 	    	collapsible: false,
 	    	minimizable: false,
 	    	maximizable: false,
-	    	draggable: true,
+	    	draggable: true, //设置可拖动
 	    	closed: true,
 	    	buttons: [
 	  	    		{
@@ -38,13 +38,13 @@
 	  						} else{
 	  							$.ajax({
 	  								type: "post",
-	  								url: "SystemServlet?method=EditPasswod&t="+new Date().getTime(),
-	  								data: $("#editPassword").serialize(),
+	  								url: "SystemAction-editPasswod",
+	  								data: $("#editPassword").serialize(),//输出序列化表单值的结果
 	  								success: function(msg){
 	  									if(msg == "success"){
 	  										$.messager.alert("消息提醒","修改成功，将重新登录","info")
 	  										setTimeout(function(){
-	  											top.location.href = "SystemServlet?method=LoginOut";
+	  											top.location.href = "SystemAction-loginOut";
 	  										}, 1000);
 	  									}
 	  								}
@@ -67,7 +67,7 @@
 		
 		//设置编辑学生窗口
 	    $("#editDialog").dialog({
-	    	title: "修改密码",
+	    	title: "修改个人信息",
 	    	width: 500,
 	    	height: 400,
 	    	fit: true,
@@ -91,7 +91,7 @@
 						} else{
 							$.ajax({
 								type: "post",
-								url: "StudentServlet?method=EditStudent&t="+new Date().getTime(),
+								url: "StudentAction-editStudent",
 								data: $("#editForm").serialize(),
 								success: function(msg){
 									if(msg == "success"){
@@ -129,16 +129,6 @@
 			
 	    });
 		
-		$("#uploadBtn").click(function(){
-			$("#uploadForm").submit();
-			setTimeout(function(){
-				var message =  $(window.frames["photo_target"].document).find("#message").text();
-				$.messager.alert("消息提醒",message,"info");
-				
-				$("#user_photo").attr("src", "PhotoServlet?method=GetPhoto&t="+new Date().getTime());
-			}, 1500)
-		});
-		
 	})
 	</script>
 </head>
@@ -146,38 +136,29 @@
 	
 	<!-- 修改学生窗口 -->
 	<div id="editDialog" style="padding: 20px">
-		<div style="width: 300px; height: 400px;float: right; margin: 20px 120px 0 0;">
-	    	<img id="user_photo" alt="照片" style="margin-bottom: 30px;display: block;max-width: 250px; max-height: 300px;" title="照片" src="PhotoServlet?method=GetPhoto" />
-	    	<form id="uploadForm" method="post" enctype="multipart/form-data" action="PhotoServlet?method=SetPhoto" target="photo_target">
-	    		<!-- StudentServlet?method=SetPhoto -->
-		    	<input class="easyui-filebox" name="photo" data-options="prompt:'选择照片'" style="width:200px;">
-		    	<input id="uploadBtn" class="easyui-linkbutton" style="width: 50px; height: 24px;" type="button" value="上传"/>
-		    </form>
-	    </div>   
-	    
     	<form id="editForm">
 	    	<table cellpadding="8" >
 	    		<tr>
 	    			<td>学号:</td>
 	    			<td>
-	    				<input id="edit_number" value="${userDetail.number }" data-options="readonly: true" class="easyui-textbox" style="width: 200px; height: 30px;" type="text" name="number" />
+	    				<input id="edit_number" name="std.number" value="${userDetail.number }" data-options="readonly: true" class="easyui-textbox" style="width: 200px; height: 30px;" type="text"  />
 	    			</td>
 	    		</tr>
 	    		<tr>
 	    			<td>姓名:</td>
-	    			<td><input id="edit_name" value="${userDetail.name }" style="width: 200px; height: 30px;" class="easyui-textbox" type="text" name="name" data-options="required:true, missingMessage:'请填写姓名'" /></td>
+	    			<td><input id="edit_name" name="std.name" value="${userDetail.name }" style="width: 200px; height: 30px;" class="easyui-textbox" type="text"  data-options="required:true, missingMessage:'请填写姓名'" /></td>
 	    		</tr>
 	    		<tr>
 	    			<td>性别:</td>
-	    			<td><select id="edit_sex" class="easyui-combobox" data-options="editable: false, panelHeight: 50, width: 60, height: 30" name="sex"><option ${userDetail.sex == '男'? 'selected':''} value="男">男</option><option ${userDetail.sex == '女'? 'selected':''} value="女">女</option></select></td>
+	    			<td><select id="edit_sex" name="std.sex" class="easyui-combobox" data-options="editable: false, panelHeight: 50, width: 60, height: 30" ><option ${userDetail.sex == '男'? 'selected':''} value="男">男</option><option ${userDetail.sex == '女'? 'selected':''} value="女">女</option></select></td>
 	    		</tr>
 	    		<tr>
 	    			<td>电话:</td>
-	    			<td><input id="edit_phone"  value="${userDetail.phone }" style="width: 200px; height: 30px;" class="easyui-textbox" type="text" name="phone" validType="mobile" /></td>
+	    			<td><input id="edit_phone" name="std.phone" value="${userDetail.phone }" style="width: 200px; height: 30px;" class="easyui-textbox" type="text"  validType="mobile" /></td>
 	    		</tr>
 	    		<tr>
 	    			<td>QQ:</td>
-	    			<td><input id="edit_qq"  value="${userDetail.qq }" style="width: 200px; height: 30px;" class="easyui-textbox" type="text" name="qq" validType="number"  /></td>
+	    			<td><input id="edit_qq"  name="std.qq" value="${userDetail.qq }" style="width: 200px; height: 30px;" class="easyui-textbox" type="text"  validType="number"  /></td>
 	    		</tr>
 	    		<tr>
 	    			<td>年级:</td>
@@ -215,9 +196,5 @@
 	    	</table>
 	    </form>
 	</div>
-	
-	<!-- 提交表单处理iframe框架 -->
-	<iframe id="photo_target" name="photo_target"></iframe>    
-	
 </body>
 </html>

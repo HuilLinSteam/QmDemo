@@ -11,10 +11,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.struts2.ServletActionContext;
+
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
 import org.apache.struts2.interceptor.SessionAware;
 import org.apache.tomcat.util.descriptor.web.ContextService;
+
+//import org.apache.tomcat.util.descriptor.web.ContextService;
+
 
 import com.bean.User;
 import com.tools.VCodeGenerator;
@@ -55,10 +59,12 @@ public class LoginAction extends ActionSupport implements ServletRequestAware,Se
 		String password = user.getPassword();
 		
 		String vcode = request.getParameter("vcode");
-		String x = request.getParameter("type");
-		int type = Integer.parseInt(x);
+//		String x = request.getParameter("type");
+//		int type = Integer.parseInt(x);
 		ActionContext actionContext = ActionContext.getContext();
 		
+
+		int type = Integer.parseInt(request.getParameter("type"));
 		String msg = "";
 		//System.out.println(user.toString());
 		String sVcode = (String) request.getSession().getAttribute("vcode");

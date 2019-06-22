@@ -2,24 +2,9 @@
 <!DOCTYPE struts PUBLIC
     "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
     "http://struts.apache.org/dtds/struts-2.3.dtd">
-
 <struts>
-	<constant name="struts.i18n.encoding" value="utf-8"/>
-	<package name="loginJSP" namespace="/" extends="struts-default">
-		<!-- ajax请求 -->
-		<action name="login" class="com.action.LoginAction" method="login">
-		
-		</action>
-		<!-- 验证码 -->
-		<action name="getVCode" class="com.action.LoginAction" method="getVCode">
-		
-		</action>
-		
-		
-		
-	</package>
-	
-	<package name="all" namespace="/" extends="struts-default">
+	<!--  <constant name="struts.multipart.saveDir" value="/tmp"/>  -->
+	<package name="StudentJsp" namespace="/" extends="struts-default">
 		<action name="*-*" class="com.action.{1}" method="{2}">
 			<result name="examStudentList">/WEB-INF/view/student/examStudentList.jsp</result>
 			<result name="studentNoteList">/WEB-INF/view/student/studentNoteList.jsp</result>
@@ -39,10 +24,4 @@
 			<result name="toTeacherListView">/WEB-INF/view/teacher/teacherList.jsp</result>
 		</action>
 	</package>
-<!-- 	<include file="struts_zcr.xml"></include> -->
-
-<!-- 	<include file="struts_lqx.xml"></include> -->
-
-<!-- 	<include file="struts_ck.xml"></include> -->
-
 </struts>

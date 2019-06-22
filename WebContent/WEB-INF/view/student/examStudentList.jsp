@@ -11,12 +11,12 @@
 	<script type="text/javascript" src="easyui/jquery.easyui.min.js"></script>
 	<script type="text/javascript" src="easyui/themes/locale/easyui-lang-zh_CN.js"></script>
 	<script type="text/javascript">
-		//验证只能为数字
+		/* //验证只能为数字
 		function scoreBlur(score){
 			if(!/^[1-9]\d*$/.test($(score).val())){
 				$(score).val("");
 			}
-		}
+		}  */
 	$(function() {	
 		
 		var table;
@@ -29,7 +29,7 @@
 	        collapsible: false,//是否可折叠的 
 	        fit: true,//自动大小 
 	        method: "post",
-	        url:"ExamServlet?method=StudentExamList&t="+new Date().getTime(),
+	        url:"ExamAction-studentExamList?t="+new Date().getTime(),
 	        idField:'id', 
 	        singleSelect: true,//是否单选 
 	        pagination: false,//分页控件 
@@ -40,6 +40,7 @@
  		        {field:'name',title:'考试名称',width:200},    
  		        {field:'etime',title:'考试时间',width:150, sortable: true},
  		        {field:'type',title:'考试类型',width:100, 
+ 		        	/* 拿到考试类型的值进行判断 */
  		        	formatter: function(value,row,index){
 						if(value == 1){
 							return "年级统考"
@@ -48,7 +49,8 @@
 						}
  					}
  		        },
- 		        {field:'grade',title:'考试年级',width:100, 
+ 		       {field:'grade',title:'考试年级',width:100,
+ 		        	/* 拿到考试年级 */
  		        	formatter: function(value,row,index){
  						if (row.grade){
  							return row.grade.name;
@@ -56,8 +58,9 @@
  							return value;
  						}
  					}		
- 		        },
+ 		        }, 
  		        {field:'clazz',title:'考试班级',width:100, 
+ 		        	/* 拿到考试班级 */
  		        	formatter: function(value,row,index){
  						if (row.clazz){
  							return row.clazz.name;
@@ -67,6 +70,7 @@
  					}	
  		        },
  		       {field:'course',title:'考试科目',width:100, 
+ 		        	/* 拿到考试科目 */
  		        	formatter: function(value,row,index){
  						if (row.course){
  							return row.course.name;
@@ -92,21 +96,23 @@
 	                    	//动态显示该次考试的科目
 	                    	$.ajax({
 	                    		type: "post",
-	        					url: "ScoreServlet?method=ColumnList",
+	        					url: "SoreAction-columnList",
 	        					data: data,
 	        					dataType: "json",
 	        					async: false,
 	        					success: function(result){
 	        						var columns = [];  
+	        						/* 遍历Jq对象，每一个科目为一个jq对象，并设至相关样式参数 */
 	        			            $.each(result, function(i, course){  
 	        			                var column={};  
 	        			                column["field"] = "course"+course.id;    
 	        			                column["title"] = course.name;  
 	        			                column["width"] = 80;  
 	        			                column["align"] = "center";
-	        			                column["resizable"] = false;  
+	        			               	 /* 可调整大小 */
+	        			                column["resizable"] = false;
+	        			               	 /*  排序 */
 	        			                column["sortable"] = true;  
-	        			                
 	        			                columns.push(column);
 	        			            }); 
 	        			            
@@ -114,6 +120,7 @@
 	        			            	columns.push({field:'total',title:'总分',width:70, sortable: true});
 	        			            }
 	        			            
+	        			            /*查看成绩中的成绩一列  */
 	        			            $('#escoreList').datagrid({ 
 	        			    	        columns: [
 	        								columns
@@ -123,12 +130,12 @@
 	        					}
 	                    	});
 	                    	setTimeout(function(){
-	        			    	$("#escoreList").datagrid("options").url = "ScoreServlet?method=ScoreList&t="+new Date().getTime();
+	        			    	$("#escoreList").datagrid("options").url = "SoreAction-scoreList?t="+new Date().getTime();
 	        			    	$("#escoreList").datagrid("options").queryParams = data;
 	        			    	$("#escoreList").datagrid("reload");
+	        			    	 $("#escoreListDialog").dialog("open");
 	        			    	
-	        			    	$("#escoreListDialog").dialog("open");
-	                    	}, 100)
+	                    	}, 100) 
 	        		    	
 	        	    	}
 	                	
@@ -165,6 +172,7 @@
    	     	sortOrder:'DESC', 
 	        remoteSort: false,
    	        frozenColumns: [[  
+   	        	/*设置成绩查询窗口  */
    				{field:'number',title:'学号',width:120,resizable: false,sortable: false},    
    				{field:'name',title:'姓名',width:120,resizable: false}	,        
    	        ]],

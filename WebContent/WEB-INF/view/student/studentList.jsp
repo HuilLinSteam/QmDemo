@@ -20,7 +20,7 @@
 	        collapsible:false,//是否可折叠的 
 	        fit: true,//自动大小 
 	        method: "post",
-	        url:"StudentServlet?method=StudentList&t="+new Date().getTime(),
+	        url:"StudentAction-studentList",
 	        idField:'id', 
 	        singleSelect:false,//是否单选 
 	        pagination:true,//分页控件 
@@ -98,7 +98,7 @@
             		if(r){
             			$.ajax({
 							type: "post",
-							url: "StudentServlet?method=DeleteStudent",
+							url: "StudentAction-deleteStudent",
 							data: {numbers: numbers, ids: ids},
 							success: function(msg){
 								if(msg == "success"){
@@ -126,7 +126,7 @@
 	  		multiple: false, //可多选
 	  		editable: false, //不可编辑
 	  		method: "post",
-	  		url: "GradeServlet?method=GradeList&t="+new Date().getTime(),
+	  		url: "GradeAction-gradeList",
 	  		onChange: function(newValue, oldValue){
 	  			//加载该年级下的学生
 	  			$('#dataList').datagrid("options").queryParams = {gradeid: newValue};
@@ -147,7 +147,7 @@
 	  		multiple: false, //可多选
 	  		editable: false, //不可编辑
 	  		method: "post",
-	  		url: "ClazzServlet?method=ClazzList&t="+new Date().getTime(),
+	  		url: "ClazzAction-clazzList",
 	  		onChange: function(newValue, oldValue){
 	  			//加载班级下的学生
 	  			$('#dataList').datagrid("options").queryParams = {clazzid: newValue};
@@ -167,7 +167,7 @@
 	  	});
 	  	
 	  	$("#add_gradeList").combobox({
-	  		url: "GradeServlet?method=GradeList&t="+new Date().getTime(),
+	  		url: "GradeAction-gradeList",
 	  		onChange: function(newValue, oldValue){
 	  			//加载该年级下的班级
 	  			$("#add_clazzList").combobox("clear");
@@ -181,7 +181,7 @@
 	  		}
 	  	});
 	  	$("#add_clazzList").combobox({
-	  		url: "ClazzServlet?method=ClazzList&t="+new Date().getTime(),
+	  		url: "ClazzAction-clazzList",
 	  		onLoadSuccess: function(){
 		  		//默认选择第一条数据
 				var data = $(this).combobox("getData");;
@@ -190,7 +190,7 @@
 	  	});
 	  	
 	  	$("#edit_gradeList").combobox({
-	  		url: "GradeServlet?method=GradeList&t="+new Date().getTime(),
+	  		url: "GradeAction-gradeList",
 	  		onChange: function(newValue, oldValue){
 	  			//加载该年级下的班级
 	  			$("#edit_clazzList").combobox("clear");
@@ -205,7 +205,7 @@
 	  	});
 	  	
 	  	$("#edit_clazzList").combobox({
-	  		url: "ClazzServlet?method=ClazzList&t="+new Date().getTime(),
+	  		url: "ClazzAction-clazzList",
 			onLoadSuccess: function(){
 				//默认选择第一条数据
 				var data = $(this).combobox("getData");
@@ -240,7 +240,7 @@
 							var clazzid = $("#add_clazzList").combobox("getValue");
 							$.ajax({
 								type: "post",
-								url: "StudentServlet?method=AddStudent",
+								url: "StudentAction-addStudent",
 								data: $("#addForm").serialize(),
 								success: function(msg){
 									if(msg == "success"){
@@ -315,7 +315,7 @@
 						} else{
 							$.ajax({
 								type: "post",
-								url: "StudentServlet?method=EditStudent&t="+new Date().getTime(),
+								url: "StudentAction-editStudent",
 								data: $("#editForm").serialize(),
 								success: function(msg){
 									if(msg == "success"){
@@ -364,7 +364,6 @@
 				$("#edit_sex").textbox('setValue', selectRow.sex);
 				$("#edit_phone").textbox('setValue', selectRow.phone);
 				$("#edit_qq").textbox('setValue', selectRow.qq);
-				$("#edit_photo").attr("src", "PhotoServlet?method=GetPhoto&type=2&number="+selectRow.number);
 				var gradeid = selectRow.gradeid;
 				var clazzid = selectRow.clazzid;
 				$("#edit_gradeList").combobox('setValue', gradeid);
@@ -406,32 +405,32 @@
 	    		<tr>
 	    			<td>学号:</td>
 	    			<td>
-	    				<input id="add_number"  class="easyui-textbox" style="width: 200px; height: 30px;" type="text" name="number" data-options="required:true, validType:'repeat', missingMessage:'请输入学号'" />
+	    				<input id="add_number" name="std.number"  class="easyui-textbox" style="width: 200px; height: 30px;" type="text"  data-options="required:true, validType:'repeat', missingMessage:'请输入学号'" />
 	    			</td>
 	    		</tr>
 	    		<tr>
 	    			<td>姓名:</td>
-	    			<td><input id="add_name" style="width: 200px; height: 30px;" class="easyui-textbox" type="text" name="name" data-options="required:true, missingMessage:'请填写姓名'" /></td>
+	    			<td><input id="add_name" name="std.name" style="width: 200px; height: 30px;" class="easyui-textbox" type="text"  data-options="required:true, missingMessage:'请填写姓名'" /></td>
 	    		</tr>
 	    		<tr>
 	    			<td>性别:</td>
-	    			<td><select id="add_sex" class="easyui-combobox" data-options="editable: false, panelHeight: 50, width: 60, height: 30" name="sex"><option value="男">男</option><option value="女">女</option></select></td>
+	    			<td><select id="add_sex" name="std.sex" class="easyui-combobox" data-options="editable: false, panelHeight: 50, width: 60, height: 30" ><option value="男">男</option><option value="女">女</option></select></td>
 	    		</tr>
 	    		<tr>
 	    			<td>电话:</td>
-	    			<td><input id="add_phone" style="width: 200px; height: 30px;" class="easyui-textbox" type="text" name="phone" validType="mobile" /></td>
+	    			<td><input id="add_phone" name="std.phone" style="width: 200px; height: 30px;" class="easyui-textbox" type="text"  validType="student.mobile" /></td>
 	    		</tr>
 	    		<tr>
 	    			<td>QQ:</td>
-	    			<td><input id="add_qq" style="width: 200px; height: 30px;" class="easyui-textbox" type="text" name="qq" validType="number" /></td>
+	    			<td><input id="add_qq" name="std.qq" style="width: 200px; height: 30px;" class="easyui-textbox" type="text"  validType="student.number" /></td>
 	    		</tr>
 	    		<tr>
 	    			<td>年级:</td>
-	    			<td><input id="add_gradeList" style="width: 200px; height: 30px;" class="easyui-textbox" name="gradeid" /></td>
+	    			<td><input id="add_gradeList" name="std.gradeid" style="width: 200px; height: 30px;" class="easyui-textbox"  /></td>
 	    		</tr>
 	    		<tr>
 	    			<td>班级:</td>
-	    			<td><input id="add_clazzList" style="width: 200px; height: 30px;" class="easyui-textbox" name="clazzid" /></td>
+	    			<td><input id="add_clazzList" name="std.clazzid" style="width: 200px; height: 30px;" class="easyui-textbox"  /></td>
 	    		</tr>
 	    	</table>
 	    </form>
@@ -439,40 +438,40 @@
 	
 	<!-- 修改学生窗口 -->
 	<div id="editDialog" style="padding: 10px">
-		<div style="float: right; margin: 20px 20px 0 0; width: 200px; border: 1px solid #EBF3FF">
-	    	<img id="edit_photo" alt="照片" style="max-width: 200px; max-height: 400px;" title="照片" src="" />
-	    </div>   
+	     <div style="float: right; margin: 20px 20px 0 0; width: 200px; border: 1px solid #EBF3FF" id="photo">
+	    	<img alt="照片" style="max-width: 200px; max-height: 400px;" title="照片" src="photo/student.jpg" />
+	    </div>  
     	<form id="editForm" method="post">
 	    	<table cellpadding="8" >
 	    		<tr>
 	    			<td>学号:</td>
 	    			<td>
-	    				<input id="edit_number" data-options="readonly: true" class="easyui-textbox" style="width: 200px; height: 30px;" type="text" name="number" data-options="required:true, validType:'repeat', missingMessage:'请输入学号'" />
-	    			</td>
+	    				<input id="edit_number" name="std.number"  data-options="readonly: true" class="easyui-textbox" style="width: 200px; height: 30px;" type="text"  data-options="required:true, validType:'repeat', missingMessage:'请输入学号'" />
+	    			</td> 
 	    		</tr>
 	    		<tr>
 	    			<td>姓名:</td>
-	    			<td><input id="edit_name" style="width: 200px; height: 30px;" class="easyui-textbox" type="text" name="name" data-options="required:true, missingMessage:'请填写姓名'" /></td>
+	    			<td><input id="edit_name" name="std.name" style="width: 200px; height: 30px;" class="easyui-textbox" type="text"  data-options="required:true, missingMessage:'请填写姓名'" /></td>
 	    		</tr>
 	    		<tr>
 	    			<td>性别:</td>
-	    			<td><select id="edit_sex" class="easyui-combobox" data-options="editable: false, panelHeight: 50, width: 60, height: 30" name="sex"><option value="男">男</option><option value="女">女</option></select></td>
+	    			<td><select id="edit_sex" name="std.sex" class="easyui-combobox" data-options="editable: false, panelHeight: 50, width: 60, height: 30" ><option value="男">男</option><option value="女">女</option></select></td>
 	    		</tr>
 	    		<tr>
 	    			<td>电话:</td>
-	    			<td><input id="edit_phone" style="width: 200px; height: 30px;" class="easyui-textbox" type="text" name="phone" validType="mobile" /></td>
+	    			<td><input id="edit_phone" name="std.phone" style="width: 200px; height: 30px;" class="easyui-textbox" type="text"  validType="mobile" /></td>
 	    		</tr>
 	    		<tr>
 	    			<td>QQ:</td>
-	    			<td><input id="edit_qq" style="width: 200px; height: 30px;" class="easyui-textbox" type="text" name="qq" validType="number" /></td>
+	    			<td><input id="edit_qq" name="std.qq"   style="width: 200px; height: 30px;" class="easyui-textbox" type="text" validType="number" /></td>
 	    		</tr>
 	    		<tr>
 	    			<td>年级:</td>
-	    			<td><input id="edit_gradeList" style="width: 200px; height: 30px;" class="easyui-textbox" name="gradeid" /></td>
+	    			<td><input id="edit_gradeList" name="std.gradeid" style="width: 200px; height: 30px;" class="easyui-textbox"/></td>
 	    		</tr>
 	    		<tr>
 	    			<td>班级:</td>
-	    			<td><input id="edit_clazzList" style="width: 200px; height: 30px;" class="easyui-textbox" name="clazzid" /></td>
+	    			<td><input id="edit_clazzList" name="std.clazzid" style="width: 200px; height: 30px;" class="easyui-textbox"  /></td>
 	    		</tr>
 	    	</table>
 	    </form>
